@@ -20,6 +20,8 @@ requires 'Config::General'; # This should reflect the config file format you've 
 requires 'Catalyst::Plugin::StackTrace';
 requires 'CGI';
 requires 'DBI';
+requires 'Catalyst::View::JSON';
+requires 'Catalyst::Controller::AutoAssets::Handler::JS';
 test_requires 'Test::More' => '0.88';
 catalyst;
 

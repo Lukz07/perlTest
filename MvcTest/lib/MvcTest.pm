@@ -51,8 +51,16 @@ __PACKAGE__->config(
         INCLUDE_PATH => [
             __PACKAGE__->path_to( 'root', 'views' ),
         ],
-    },
+    }
 );
+
+__PACKAGE__->config(
+        'View::JSON' => {
+          allow_callback  => 1,    # defaults to 0
+          callback_param  => 'cb', # defaults to 'callback'
+          expose_stash    => [ qw(foo bar) ], # defaults to everything
+      }
+    );
 
 # Start the application
 __PACKAGE__->setup();

@@ -1,4 +1,4 @@
-$(document).ready(function(){
+
   $("form#loginForm").submit(function() { // loginForm is submitted
     var username = $('#username').attr('value'); // get username
     var password = $('#password').attr('value'); // get password
@@ -6,7 +6,7 @@ $(document).ready(function(){
     if (username && password) { // values are not empty
       $.ajax({
         type: "GET",
-        url: "login.pl", // URL of the Perl script
+        url: "account/login", // URL of the Perl script
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         // send username and password as parameters to the Perl script
@@ -41,4 +41,3 @@ $(document).ready(function(){
     $('div#loginResult').fadeIn();
     return false;
   });
-});

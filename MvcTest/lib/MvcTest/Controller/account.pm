@@ -54,11 +54,20 @@ $sth->execute($username, $password)
 my ($userID) = $sth->fetchrow_array;
 
 # create a JSON string according to the database result
-my $json = ($userID) ? 
+my $message = ($userID) ? 
   qq{{"success" : "login is successful", "userid" : "$userID"}} : 
   qq{{"error" : "username or password is wrong"}};
 
-$c->stash(message => $json, template => 'home.html');
+my $error = ($userID) ? 1 : 0;
+
+my $result = new Result($error, $message, $userID);
+
+$c->log->debug($result->{'error'});
+$c->log->debug($result->{'message'});
+$c->log->debug($result->{'userID'});
+
+$c->stash->{foo} = $result;
+$c->forward('View::JSON');
 }
 =encoding utf8
 
@@ -74,5 +83,17 @@ it under the same terms as Perl itself.
 =cut
 
 __PACKAGE__->meta->make_immutable;
+
+package Result;
+
+sub new {
+		my $class = shift;
+		my $self = bless {
+			'error' => shift,
+			'message' => shift,
+			'userid' => shift
+			}, $class;
+		return $self;
+}
 
 1;
