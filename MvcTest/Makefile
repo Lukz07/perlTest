@@ -13,14 +13,14 @@
 
 #     ABSTRACT => q[Catalyst based application]
 #     AUTHOR => [q[Catalyst developer]]
-#     BUILD_REQUIRES => { Test::More=>q[0.88], ExtUtils::MakeMaker=>q[6.36] }
+#     BUILD_REQUIRES => { ExtUtils::MakeMaker=>q[6.36], Test::More=>q[0.88] }
 #     CONFIGURE_REQUIRES => {  }
 #     DISTNAME => q[MvcTest]
 #     EXE_FILES => [q[script/mvctest_cgi.pl], q[script/mvctest_create.pl], q[script/mvctest_fastcgi.pl], q[script/mvctest_server.pl], q[script/mvctest_test.pl]]
 #     LICENSE => q[perl]
 #     NAME => q[MvcTest]
 #     NO_META => q[1]
-#     PREREQ_PM => { Catalyst::Plugin::Static::Simple=>q[0], Catalyst::Runtime=>q[5.90075], Catalyst::Action::RenderView=>q[0], namespace::autoclean=>q[0], Catalyst::Plugin::StackTrace=>q[0], Config::General=>q[0], Moose=>q[0], ExtUtils::MakeMaker=>q[6.36], Test::More=>q[0.88], Catalyst::Plugin::ConfigLoader=>q[0] }
+#     PREREQ_PM => { CGI=>q[0], Test::More=>q[0.88], namespace::autoclean=>q[0], Catalyst::Plugin::Static::Simple=>q[0], DBI=>q[0], Config::General=>q[0], ExtUtils::MakeMaker=>q[6.36], Catalyst::Runtime=>q[5.90075], Catalyst::Action::RenderView=>q[0], Catalyst::Plugin::StackTrace=>q[0], Moose=>q[0], Catalyst::Plugin::ConfigLoader=>q[0] }
 #     TEST_REQUIRES => {  }
 #     VERSION => q[0.01]
 #     VERSION_FROM => q[lib/MvcTest.pm]
@@ -441,26 +441,20 @@ manifypods : pure_all
 
 EXE_FILES = script/mvctest_cgi.pl script/mvctest_create.pl script/mvctest_fastcgi.pl script/mvctest_server.pl script/mvctest_test.pl
 
-pure_all :: $(INST_SCRIPT)\mvctest_server.pl $(INST_SCRIPT)\mvctest_cgi.pl $(INST_SCRIPT)\mvctest_test.pl $(INST_SCRIPT)\mvctest_create.pl $(INST_SCRIPT)\mvctest_fastcgi.pl
+pure_all :: $(INST_SCRIPT)\mvctest_create.pl $(INST_SCRIPT)\mvctest_test.pl $(INST_SCRIPT)\mvctest_cgi.pl $(INST_SCRIPT)\mvctest_server.pl $(INST_SCRIPT)\mvctest_fastcgi.pl
 	$(NOECHO) $(NOOP)
 
 realclean ::
 	$(RM_F) \
-	  $(INST_SCRIPT)\mvctest_server.pl $(INST_SCRIPT)\mvctest_cgi.pl \
-	  $(INST_SCRIPT)\mvctest_test.pl $(INST_SCRIPT)\mvctest_create.pl \
+	  $(INST_SCRIPT)\mvctest_create.pl $(INST_SCRIPT)\mvctest_test.pl \
+	  $(INST_SCRIPT)\mvctest_cgi.pl $(INST_SCRIPT)\mvctest_server.pl \
 	  $(INST_SCRIPT)\mvctest_fastcgi.pl 
 
-$(INST_SCRIPT)\mvctest_server.pl : script/mvctest_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
-	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_server.pl
-	$(CP) script/mvctest_server.pl $(INST_SCRIPT)\mvctest_server.pl
-	$(FIXIN) $(INST_SCRIPT)\mvctest_server.pl
-	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)\mvctest_server.pl
-
-$(INST_SCRIPT)\mvctest_cgi.pl : script/mvctest_cgi.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
-	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_cgi.pl
-	$(CP) script/mvctest_cgi.pl $(INST_SCRIPT)\mvctest_cgi.pl
-	$(FIXIN) $(INST_SCRIPT)\mvctest_cgi.pl
-	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)\mvctest_cgi.pl
+$(INST_SCRIPT)\mvctest_create.pl : script/mvctest_create.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_create.pl
+	$(CP) script/mvctest_create.pl $(INST_SCRIPT)\mvctest_create.pl
+	$(FIXIN) $(INST_SCRIPT)\mvctest_create.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)\mvctest_create.pl
 
 $(INST_SCRIPT)\mvctest_test.pl : script/mvctest_test.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_test.pl
@@ -468,11 +462,17 @@ $(INST_SCRIPT)\mvctest_test.pl : script/mvctest_test.pl $(FIRST_MAKEFILE) $(INST
 	$(FIXIN) $(INST_SCRIPT)\mvctest_test.pl
 	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)\mvctest_test.pl
 
-$(INST_SCRIPT)\mvctest_create.pl : script/mvctest_create.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
-	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_create.pl
-	$(CP) script/mvctest_create.pl $(INST_SCRIPT)\mvctest_create.pl
-	$(FIXIN) $(INST_SCRIPT)\mvctest_create.pl
-	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)\mvctest_create.pl
+$(INST_SCRIPT)\mvctest_cgi.pl : script/mvctest_cgi.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_cgi.pl
+	$(CP) script/mvctest_cgi.pl $(INST_SCRIPT)\mvctest_cgi.pl
+	$(FIXIN) $(INST_SCRIPT)\mvctest_cgi.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)\mvctest_cgi.pl
+
+$(INST_SCRIPT)\mvctest_server.pl : script/mvctest_server.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
+	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_server.pl
+	$(CP) script/mvctest_server.pl $(INST_SCRIPT)\mvctest_server.pl
+	$(FIXIN) $(INST_SCRIPT)\mvctest_server.pl
+	-$(NOECHO) $(CHMOD) $(PERM_RWX) $(INST_SCRIPT)\mvctest_server.pl
 
 $(INST_SCRIPT)\mvctest_fastcgi.pl : script/mvctest_fastcgi.pl $(FIRST_MAKEFILE) $(INST_SCRIPT)$(DFSEP).exists $(INST_BIN)$(DFSEP).exists
 	$(NOECHO) $(RM_F) $(INST_SCRIPT)\mvctest_fastcgi.pl
@@ -530,9 +530,9 @@ realclean_subdirs :
 # Delete temporary files (via clean) and also delete dist files
 realclean purge ::  clean realclean_subdirs
 	- $(RM_F) \
-	  $(FIRST_MAKEFILE) $(MAKEFILE_OLD) 
+	  $(MAKEFILE_OLD) $(FIRST_MAKEFILE) 
 	- $(RM_RF) \
-	  $(DISTVNAME) MYMETA.yml 
+	  MYMETA.yml $(DISTVNAME) 
 
 
 # --- MakeMaker metafile section:
@@ -840,12 +840,14 @@ ppd :
 	$(NOECHO) $(ECHO) "    <ABSTRACT>Catalyst based application</ABSTRACT>" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "    <AUTHOR>Catalyst developer</AUTHOR>" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "    <IMPLEMENTATION>" >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"CGI::\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"Catalyst::Action::RenderView\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"Catalyst::Plugin::ConfigLoader\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"Catalyst::Plugin::StackTrace\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"Catalyst::Plugin::Static::Simple\" />" >> $(DISTNAME).ppd
-	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"Catalyst::Runtime\" VERSION=\"5.90075\" />" >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) "        <REQUIRE VERSION=\"5.90075\" NAME=\"Catalyst::Runtime\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"Config::General\" />" >> $(DISTNAME).ppd
+	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"DBI::\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"Moose::\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <REQUIRE NAME=\"namespace::autoclean\" />" >> $(DISTNAME).ppd
 	$(NOECHO) $(ECHO) "        <ARCHITECTURE NAME=\"MSWin32-x64-multi-thread-5.20\" />" >> $(DISTNAME).ppd
@@ -907,14 +909,14 @@ installdeps_notest ::
 	$(NOECHO) $(NOOP)
 
 upgradedeps ::
-	$(PERL) .\Makefile.PL --config= --upgradedeps=Test::More,0.88,Catalyst::Runtime,5.90075,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Moose,0,namespace::autoclean,0,Config::General,0,Catalyst::Plugin::StackTrace,0
+	$(PERL) .\Makefile.PL --config= --upgradedeps=Test::More,0.88,Catalyst::Runtime,5.90075,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Moose,0,namespace::autoclean,0,Config::General,0,Catalyst::Plugin::StackTrace,0,CGI,0,DBI,0
 
 upgradedeps_notest ::
-	$(PERL) .\Makefile.PL --config=notest,1 --upgradedeps=Test::More,0.88,Catalyst::Runtime,5.90075,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Moose,0,namespace::autoclean,0,Config::General,0,Catalyst::Plugin::StackTrace,0
+	$(PERL) .\Makefile.PL --config=notest,1 --upgradedeps=Test::More,0.88,Catalyst::Runtime,5.90075,Catalyst::Plugin::ConfigLoader,0,Catalyst::Plugin::Static::Simple,0,Catalyst::Action::RenderView,0,Moose,0,namespace::autoclean,0,Config::General,0,Catalyst::Plugin::StackTrace,0,CGI,0,DBI,0
 
 listdeps ::
 	@$(PERL) -le "print for @ARGV" 
 
 listalldeps ::
-	@$(PERL) -le "print for @ARGV" Test::More Catalyst::Runtime Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Action::RenderView Moose namespace::autoclean Config::General Catalyst::Plugin::StackTrace
+	@$(PERL) -le "print for @ARGV" Test::More Catalyst::Runtime Catalyst::Plugin::ConfigLoader Catalyst::Plugin::Static::Simple Catalyst::Action::RenderView Moose namespace::autoclean Config::General Catalyst::Plugin::StackTrace CGI DBI
 

@@ -35,32 +35,30 @@ sub index :Path :Args(0) {
 sub login :Local :Args(0) {
 	my ($self, $c) = @_;
 
-my $username     = $c->request->params->{username}     || 'N/A';
-my $password    = $c->request->params->{password}    || 'N/A';
+my $username     = $c->request->params->{username} || 'N/A';
+my $password    = $c->request->params->{password} || 'N/A';
 
-$c->stash(username => $username, password => $password, template => 'home.html');
+# read the CGI params
+my $cgi = CGI->new;
 
-# # read the CGI params
-# my $cgi = CGI->new;
-# # my $username = $cgi->param("username");
-# # my $password = $cgi->param("password");
+# connect to the database
+my $dbh = DBI->connect("DBI:mysql:database=perltest", "perltestUser", "Globant01") 
+  or die $DBI::errstr;
 
-# # connect to the database
-# my $dbh = DBI->connect("DBI:mysql:database=test", "lucas", "lucas") 
-#   or die $DBI::errstr;
+# check the username and password in the database
+my $statement = qq{SELECT id FROM Users WHERE username=? and password=?};
+my $sth = $dbh->prepare($statement)
+  or die $dbh->errstr;
+$sth->execute($username, $password)
+  or die $sth->errstr;
+my ($userID) = $sth->fetchrow_array;
 
-# # check the username and password in the database
-# my $statement = qq{SELECT id FROM mydb WHERE username=? and password=?};
-# my $sth = $dbh->prepare($statement)
-#   or die $dbh->errstr;
-# $sth->execute($username, $password)
-#   or die $sth->errstr;
-# my ($userID) = $sth->fetchrow_array;
+# create a JSON string according to the database result
+my $json = ($userID) ? 
+  qq{{"success" : "login is successful", "userid" : "$userID"}} : 
+  qq{{"error" : "username or password is wrong"}};
 
-# # create a JSON string according to the database result
-# my $json = ($userID) ? 
-#   qq{{"success" : "login is successful", "userid" : "$userID"}} : 
-#   qq{{"error" : "username or password is wrong"}};
+$c->stash(message => $json, template => 'home.html');
 }
 =encoding utf8
 
