@@ -1,10 +1,11 @@
 package MvcTest::Controller::account;
 use Moose;
 use namespace::autoclean;
-use CGI;
+use CGI qw(:standard);
 use DBI;
 use strict;
 use warnings;
+use JSON;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -58,15 +59,18 @@ my $message = ($userID) ?
   qq{{"success" : "login is successful", "userid" : "$userID"}} : 
   qq{{"error" : "username or password is wrong"}};
 
-my $error = ($userID) ? 1 : 0;
+my $error = ($userID) ? 0 : 1;
 
 my $result = new Result($error, $message, $userID);
 
 $c->log->debug($result->{'error'});
 $c->log->debug($result->{'message'});
-$c->log->debug($result->{'userID'});
+$c->log->debug($result->{'userid'});
 
-$c->stash->{foo} = $result;
+my $json = to_json($result, {allow_blessed=>1,convert_blessed=>1});
+$c->log->debug($json);
+
+$c->stash->{foo} = $json;
 $c->forward('View::JSON');
 }
 =encoding utf8
@@ -95,5 +99,7 @@ sub new {
 			}, $class;
 		return $self;
 }
+
+sub TO_JSON { return { %{ shift() } }; }
 
 1;
