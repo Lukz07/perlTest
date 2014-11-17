@@ -67,10 +67,7 @@ $c->log->debug($result->{'error'});
 $c->log->debug($result->{'message'});
 $c->log->debug($result->{'userid'});
 
-my $json = to_json($result, {allow_blessed=>1,convert_blessed=>1});
-$c->log->debug($json);
-
-$c->stash->{foo} = $json;
+$c->stash->{foo} = $result;
 $c->forward('View::JSON');
 }
 =encoding utf8

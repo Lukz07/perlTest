@@ -1,6 +1,7 @@
 package MvcTest::View::JSON;
 use Moose;
 use namespace::autoclean;
+use JSON;
 
 extends 'Catalyst::View::JSON';
 
@@ -33,6 +34,11 @@ __PACKAGE__->config(
           expose_stash    => [ qw(foo bar result) ], # defaults to everything
       }
     );
+
+sub encode_json {
+      my($self, $c, $data) = @_;
+      to_json($data, {allow_blessed=>1,convert_blessed=>1});
+  }
 
 __PACKAGE__->meta->make_immutable;
 

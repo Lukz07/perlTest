@@ -21,15 +21,14 @@
         // script call was successful 
         // data contains the JSON values returned by the Perl script 
         success: function(data){
-          var obj = $.parseJSON(data.foo);
-          if (obj.error == '1') { // script returned error
-            $('div#loginResult').text("data.error: " + obj.message);
+          if (data.foo.error == '1') { // script returned error
+            $('div#loginResult').text("data.error: " + data.foo.message);
             $('div#loginResult').addClass("error");
           } // if
           else { // login was successful
             $('form#loginForm').hide();
-            $('div#loginResult').text("data.success: " + obj.message 
-              + ", data.userid: " + obj.userid);
+            $('div#loginResult').text("data.success: " + data.foo.message 
+              + ", data.userid: " + data.foo.userid);
             $('div#loginResult').addClass("success");
           } //else
         } // success
