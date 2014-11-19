@@ -22,7 +22,7 @@ requires 'CGI';
 requires 'DBI';
 requires 'Catalyst::View::JSON';
 requires 'Catalyst::Controller::AutoAssets::Handler::JS';
-required 'JSON';
+requires 'JSON';
 test_requires 'Test::More' => '0.88';
 catalyst;
 
