@@ -6,6 +6,7 @@ use DBI;
 use strict;
 use warnings;
 use JSON;
+use MvcTest::Model::Result;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -97,19 +98,5 @@ it under the same terms as Perl itself.
 =cut
 
 __PACKAGE__->meta->make_immutable;
-
-package Result;
-
-sub new {
-		my $class = shift;
-		my $self = bless {
-			'error' => shift,
-			'message' => shift,
-			'userid' => shift
-			}, $class;
-		return $self;
-}
-
-sub TO_JSON { return { %{ shift() } }; }
 
 1;
