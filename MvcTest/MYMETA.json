@@ -45,7 +45,6 @@
             "DBI" : "0",
             "JSON" : "0",
             "Moose" : "0",
-            "MvcTest::Model::Result" : "0",
             "namespace::autoclean" : "0"
          }
       }

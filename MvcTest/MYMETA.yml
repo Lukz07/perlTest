@@ -31,7 +31,6 @@ requires:
   DBI: '0'
   JSON: '0'
   Moose: '0'
-  MvcTest::Model::Result: '0'
   namespace::autoclean: '0'
 resources:
   license: http://dev.perl.org/licenses/
