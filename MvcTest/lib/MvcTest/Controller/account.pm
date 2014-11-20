@@ -75,6 +75,7 @@ if($error == 0)
 else
 {
 	$c->stash(template => 'account/login.html');
+	$c->stash(result => $result);
 	$c->forward('View::HTML');
 }
 

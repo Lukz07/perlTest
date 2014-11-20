@@ -24,7 +24,8 @@ Catalyst Controller.
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->stash(template => 'home.html')
+    $c->stash(template => 'home.html');
+    $c->forward('View::HTML');
 }
 
 
