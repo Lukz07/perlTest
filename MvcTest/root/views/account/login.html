@@ -1,7 +1,10 @@
 [% META title = 'Login' -%]
 <div id="loginContent" class="container">
-  <div id="loginResult" style="display:none;">
+  [% IF result.error %]
+  <div id="loginResult">
+    [% result.message %]
   </div>
+  [%END%]
   <form id="loginForm" name="loginForm" method="post" action="[% c.uri_for('login') %]">
     <fieldset>
       <legend>Enter information</legend>
