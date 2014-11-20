@@ -30,7 +30,6 @@ sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
  
     $c->stash(template => 'account/login.html');
-    $c->forward('View::HTML');
 }
 
 
@@ -48,7 +47,7 @@ my $dbh = DBI->connect("DBI:mysql:database=perltest", "perltestUser", "Globant01
   or die $DBI::errstr;
 
 # check the username and password in the database
-my $statement = qq{SELECT id FROM users WHERE username=? and password=?};
+my $statement = qq{SELECT id FROM Users WHERE username=? and password=?};
 my $sth = $dbh->prepare($statement)
   or die $dbh->errstr;
 $sth->execute($username, $password)
@@ -68,19 +67,8 @@ $c->log->debug($result->{'error'});
 $c->log->debug($result->{'message'});
 $c->log->debug($result->{'userid'});
 
-if($error == 0)
-{
-	$c->response->redirect($c->uri_for($c->controller('home')->action_for('index')));
-}
-else
-{
-	$c->stash(template => 'account/login.html');
-	$c->forward('View::HTML');
-}
-
-#$c->stash->{foo} = $result;
-#$c->forward('View::JSON');
-
+$c->stash->{foo} = $result;
+$c->forward('View::JSON');
 }
 =encoding utf8
 

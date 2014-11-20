@@ -4,7 +4,7 @@
       "Catalyst developer"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Module::Install version 1.10, CPAN::Meta::Converter version 2.141170",
+   "generated_by" : "Module::Install version 1.14, CPAN::Meta::Converter version 2.142690",
    "license" : [
       "perl_5"
    ],
@@ -35,12 +35,15 @@
          "requires" : {
             "CGI" : "0",
             "Catalyst::Action::RenderView" : "0",
+            "Catalyst::Controller::AutoAssets::Handler::JS" : "0",
             "Catalyst::Plugin::ConfigLoader" : "0",
             "Catalyst::Plugin::StackTrace" : "0",
             "Catalyst::Plugin::Static::Simple" : "0",
             "Catalyst::Runtime" : "5.90075",
+            "Catalyst::View::JSON" : "0",
             "Config::General" : "0",
             "DBI" : "0",
+            "JSON" : "0",
             "Moose" : "0",
             "namespace::autoclean" : "0"
          }
