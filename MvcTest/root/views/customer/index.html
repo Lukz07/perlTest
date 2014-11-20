@@ -1,0 +1,15 @@
+index.html<br>
+[% page %]<br>
+[% customer %]<br>
+[% FOREACH field in customer %]
+	hola [% field %]
+[% END %]
+<br>
+<script>
+	$.ajax({
+		url: 'customer/page/1',
+		success: function(data){
+			console.log(data);
+		}
+	})
+</script>
