@@ -3,7 +3,8 @@ $(function(){
 		renderPage(1)
 	};
 
-	$('.pagination a').click(function(page){
+	$('.pagination a').click(function(e, page){
+		e.preventDefault();
 		page = $(this).html();
 		renderPage(page);
 	});
@@ -12,9 +13,15 @@ $(function(){
 		$.ajax({
 			url: 'customer/page/'+pageNumber,
 			success: function(data){
-				var jsonData;
+
+				var jsonData= null;
 				jsonData = data.json_data;
-					
+
+				console.log(jsonData)
+				
+				//vacio el contenido de la tabla para mostrar la nueva
+				$('table tbody').html('');
+
 				$.each(jsonData, function(i, val){
 					$('table tbody').append('<tr id="'+i+'"></tr>');
 					$('table tbody #'+i+'').append('<td>'+val.customer_id+'</td>');
