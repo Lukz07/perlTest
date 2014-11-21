@@ -1,6 +1,7 @@
 package MvcTest::Controller::customer;
 use Moose;
 use namespace::autoclean;
+use MvcTest::DB::DBHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -21,8 +22,8 @@ Catalyst Controller.
 
 =cut
 
-my $db_username = "perltestUser";
-my $db_password = "123456";
+#my $db_username = "perltestUser";
+#my $db_password = "123456";
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
@@ -38,8 +39,9 @@ sub add :Path('add'){
 	#$c->response->body('Matched MvcTest::Controller::customer in add.'.$db_username);
 
     # connect to the database
-	my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-  		or die $DBI::errstr;
+	#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+  	#	or die $DBI::errstr;
+  	my $dbh = DBHelper::connect();
 
 	$c->forward('View::HTML');
 	if ( $c->request->params->{store_id} > 0 ){
@@ -57,12 +59,15 @@ sub add :Path('add'){
 	  	my $last_update	= $c->request->params->{last_update};	  		
 
 		# get a specific customer data by id
-		my $statement = qq{insert into customer(store_id, first_name, last_name, email, address_id, active, create_date) 
-		 					values('$store_id', '$first_name', '$last_name', '$email', '$address_id', '$active', '$create_date')};
-		my $sth = $dbh->prepare($statement)
-	  		or die $dbh->errstr;
-		$sth->execute()
-	  		or die $sth->errstr;
+		#my $statement = qq{insert into customer(store_id, first_name, last_name, email, address_id, active, create_date) 
+		# 					values('$store_id', '$first_name', '$last_name', '$email', '$address_id', '$active', '$create_date')};
+		#my $sth = $dbh->prepare($statement)
+	  	#	or die $dbh->errstr;
+		#$sth->execute()
+	  	#	or die $sth->errstr;
+	  	my $sth = query( $dbh, qq{insert into customer(store_id, first_name, last_name, email, address_id, active, create_date) 
+								values('$store_id', '$first_name', '$last_name', '$email', '$address_id', '$active', '$create_date')} );
+
 
 		#$c->stash(template => 'customer/editsave.html');
 
@@ -81,18 +86,20 @@ sub page :Path('page') :Args(1){
 	$c->stash->{page} = $page;
 
     # connect to the database
-	my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-  		or die $DBI::errstr;
+	#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+  	#	or die $DBI::errstr;
+  	my $dbh = DBHelper::connect();
 
   	my $page_size = 10;
   	my $start = $page_size*($page-1);
 
 	# check the username and password in the database
-	my $statement = qq{SELECT * FROM customer order by customer_id LIMIT $start, $page_size };
-	my $sth = $dbh->prepare($statement)
-  		or die $dbh->errstr;
-	$sth->execute()
-  		or die $sth->errstr;
+	#my $statement = qq{SELECT * FROM customer order by customer_id LIMIT $start, $page_size };
+	#my $sth = $dbh->prepare($statement)
+  	#	or die $dbh->errstr;
+	#$sth->execute()
+  	#	or die $sth->errstr;
+  	my $sth = DBHelper::query($dbh, qq{SELECT * FROM customer order by customer_id LIMIT $start, $page_size } );
 
 	my $json = {};
 
@@ -104,11 +111,12 @@ sub page :Path('page') :Args(1){
 	$c->stash->{json_status} = "OK";
 
 	# calculo la cantidad total de páginas
-	$statement = qq{SELECT count(*) as cantidad FROM customer };
-	$sth = $dbh->prepare($statement)
-  		or die $dbh->errstr;
-	$sth->execute()
-  		or die $sth->errstr;
+	#$statement = qq{SELECT count(*) as cantidad FROM customer };
+	#$sth = $dbh->prepare($statement)
+  	#	or die $dbh->errstr;
+	#$sth->execute()
+  	#	or die $sth->errstr;
+  	$sth = DBHelper::query($dbh, qq{ SELECT count(*) as cantidad FROM customer } );  	
 
 	my @num_rows = $sth->fetchrow_array();
 
@@ -119,10 +127,10 @@ sub page :Path('page') :Args(1){
 }
 
 # intento de capturar el caso sin parametros para que avise del error
-sub editview :Path("editview"){
-	my ( $self, $c ) = @_;
-	$c->response->body('debe especificar un Id de customer');
-}
+#sub editview :Path("editview"){
+#	my ( $self, $c ) = @_;
+#	$c->response->body('debe especificar un Id de customer');
+#}
 
 sub editview :Path("editview") :Args(1){
 	my ( $self, $c, $id ) = @_;
@@ -143,15 +151,18 @@ sub editdata :Path("editdata") :Args(1){
 			# viewing
 
 		    # connect to the database
-			my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-		  		or die $DBI::errstr;
+			# connect to the database
+			#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+		  	#	or die $DBI::errstr;
+  			my $dbh = DBHelper::connect();
 
 			# get a specific customer data by id
-			my $statement = qq{SELECT * FROM customer where customer_id = $id };
-			my $sth = $dbh->prepare($statement)
-		  		or die $dbh->errstr;
-			$sth->execute()
-		  		or die $sth->errstr;
+			#my $statement = qq{SELECT * FROM customer where customer_id = $id };
+			#my $sth = $dbh->prepare($statement)
+		  	#	or die $dbh->errstr;
+			#$sth->execute()
+		  	#	or die $sth->errstr;
+		  	my $sth = DBHelper::query( $dbh, qq{SELECT * FROM customer where customer_id = $id } );
 
 			my $json = {};
 
@@ -174,8 +185,10 @@ sub editdata :Path("editdata") :Args(1){
 sub editsave :Path("editsave") :Args(){
 	my ( $self, $c ) = @_;
 
-	my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-  		or die $DBI::errstr;
+	# connect to the database
+	#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+  	#	or die $DBI::errstr;
+  	my $dbh = DBHelper::connect();
 
   	my $customer_id = $c->request->params->{customer_id};
   	my $store_id 	= $c->request->params->{store_id};
@@ -192,25 +205,36 @@ sub editsave :Path("editsave") :Args(){
   	#			 where customer_id = $customer_id";
 
 	# check the username and password in the database
-	my $statement = qq{	
-		UPDATE customer 
-		set store_id = $store_id, 
-			first_name = '$first_name',
-			last_name	= '$last_name',
-			email		= '$email',
-			address_id	= '$address_id',
-			active		= $active,
-			create_date = '$create_date',
-			last_update = '$last_update'
-		where customer_id = $customer_id};
+	#my $statement = qq{	
+	#	UPDATE customer 
+	#	set store_id = $store_id, 
+	#		first_name = '$first_name',
+	#		last_name	= '$last_name',
+	#		email		= '$email',
+	#		address_id	= '$address_id',
+	#		active		= $active,
+	#		create_date = '$create_date',
+	#		last_update = '$last_update'
+	#	where customer_id = $customer_id};
 	#my $statement = $query;
-	my $sth = $dbh->prepare($statement)
-  		or die $dbh->errstr;
-	$sth->execute()
- 		or die $sth->errstr;
+	#my $sth = $dbh->prepare($statement)
+  	#	or die $dbh->errstr;
+	#$sth->execute()
+ 	#	or die $sth->errstr;
 
- 	$c->stash->{customer_id} = $customer_id;
- 	$c->stash->{store_id} = $store_id;
+ 	my $sth = DBHelper::query( $dbh,"UPDATE customer 
+									set store_id = $store_id, 
+										first_name = '$first_name',
+										last_name	= '$last_name',
+										email		= '$email',
+										address_id	= '$address_id',
+										active		= $active,
+										create_date = '$create_date',
+										last_update = '$last_update' 
+									where customer_id = $customer_id");
+
+ 	#$c->stash->{customer_id} = $customer_id;
+ 	#$c->stash->{store_id} = $store_id;
  	#$c->stash->{query} = $query;
 
 	$c->forward('View::HTML');
@@ -233,16 +257,18 @@ sub edit :Path('/edit') :Args(){
 			}else{
 				# viewing
 
-			    # connect to the database
-				my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-			  		or die $DBI::errstr;
+		        # connect to the database
+				#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+	  			#	or die $DBI::errstr;
+  				my $dbh = DBHelper::connect();
 
-				# check the username and password in the database
-				my $statement = qq{SELECT * FROM customer where customer_id = $id };
-				my $sth = $dbh->prepare($statement)
-			  		or die $dbh->errstr;
-				$sth->execute()
-			  		or die $sth->errstr;
+				# get data from 
+				#my $statement = qq{SELECT * FROM customer where customer_id = $id };
+				#my $sth = $dbh->prepare($statement)
+			  	#	or die $dbh->errstr;
+				#$sth->execute()
+			  	#	or die $sth->errstr;
+			  	my $sth = query( $dbh, qq{ SELECT * FROM customer where customer_id = $id } );
 
 				my $json = {};
 
