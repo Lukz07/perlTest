@@ -2,6 +2,7 @@ package MvcTest::Controller::storemain;
 use Moose;
 use namespace::autoclean;
 use MvcTest::DB::DBHelper;
+use MvcTest::Helpers::MathHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -68,7 +69,7 @@ sub add :Path('add'){
 	  	#	or die $sth->errstr;
 
 	  	my $sth = query( $dbh, qq{insert into staff(first_name, last_name, address_id, picture, email, store_id, active, username, password, last_update) 
-		 					values('$first_name', '$last_name', '$address_id', '$picture', '$email', '$store_id', '$active', '$username', '$password', '$last_update')};
+		 					values('$first_name', '$last_name', '$address_id', '$picture', '$email', '$store_id', '$active', '$username', '$password', '$last_update')});
 
 		#$c->stash(template => 'customer/editsave.html');
 
@@ -121,7 +122,7 @@ sub page :Path('page') :Args(1){
 
 	my @num_rows = $sth->fetchrow_array();
 
-	$c->stash->{total_pages} = round( $num_rows[0]/10 );	
+	$c->stash->{total_pages} = MathHelper::round( $num_rows[0]/10 );	
 
 	$c->forward('View::JSON');
 	#$c->forward('View::HTML');
@@ -288,20 +289,6 @@ sub edit :Path('/edit') :Args(){
 			$c->forward('View::HTML');
 		}
 	}
-}
-
-
-sub round { 
-	my $var = shift; 
-	if (intCheck($var - 0.5)) { 
-		$var = $var + 0.1; 
-	} 
-	return sprintf("%.0f", $var); 
-}
-
-sub intCheck{ 
-	my $num = shift; 
-	return ($num =~ m/^\d+$/); 
 }
 
 =encoding utf8
