@@ -3,6 +3,7 @@ use Moose;
 use namespace::autoclean;
 use MvcTest::DB::DBHelper;
 use MvcTest::Helpers::MathHelper;
+use MvcTest::Model::StoreModel;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -78,7 +79,7 @@ sub page :Path('page') :Args(1){
 	my $json = {};
 
 	while( my @staff = $sth->fetchrow_array() ){
-		$json->{ $staff[0] } = new Result_query( @staff );
+		$json->{ $staff[0] } = new StoreModel( @staff );
 	}
 
 	$c->stash->{json_data} = $json;
@@ -120,7 +121,7 @@ sub editdata :Path("editdata") :Args(1){
 
 			my $json = {};
 
-			$json->{staff} = new Result_query( $sth->fetchrow_array() );
+			$json->{staff} = new StoreModel( $sth->fetchrow_array() );
 
 			$c->stash->{json_data} = $json;
 			$c->stash->{json_status} = "OK";
@@ -184,16 +185,15 @@ sub edit :Path('/edit') :Args(){
 				$c->response->body("posting");
 			}else{
 				# viewing
-
 			    # connect to the database
 			  	my $dbh = DBHelper::connect();
 
 				# get data from
-			  	my $sth = query( $dbh, qq{ SELECT * FROM staff where staff_id = $id } );
+			  	my $sth = DBHelper::query( $dbh, qq{SELECT * FROM staff where staff_id = $id } );
 
 				my $json = {};
 
-				$json->{staff} = new Result_query( $sth->fetchrow_array() );
+				$json->{staff} = new StoreModel( $sth->fetchrow_array() );
 
 				$c->stash->{json_data} = $json;
 				$c->stash->{json_status} = "OK";
@@ -206,6 +206,15 @@ sub edit :Path('/edit') :Args(){
 			$c->forward('View::HTML');
 		}
 	}
+}
+
+sub delete :Path("delete") :Args(1) {
+	my ( $self, $c, $id ) = @_;
+	# connect to the database
+	my $dbh = DBHelper::connect();
+	# execute the delete query
+ 	my $sth = DBHelper::query( $dbh, "DELETE FROM staff WHERE staff_id = $id" );
+ 	$c->forward('View::HTML');
 }
 
 =encoding utf8
@@ -223,26 +232,26 @@ it under the same terms as Perl itself.
 
 __PACKAGE__->meta->make_immutable;
 
-package Result_query;
+# package StoreModel;
 
-sub new {
-		my $class = shift;
-		my $self = bless {
-			'staff_id' => shift,
-			'first_name' => shift,
-			'last_name' => shift,
-			'address_id' => shift,
-			'picture' => shift,
-			'email' => shift,
-			'store_id' => shift,
-			'active' => shift,
-			'username' => shift,
-			'password' => shift,
-			'last_update' => shift,
-			}, $class;
-		return $self;
-}
+# sub new {
+# 		my $class = shift;
+# 		my $self = bless {
+# 			'staff_id' => shift,
+# 			'first_name' => shift,
+# 			'last_name' => shift,
+# 			'address_id' => shift,
+# 			'picture' => shift,
+# 			'email' => shift,
+# 			'store_id' => shift,
+# 			'active' => shift,
+# 			'username' => shift,
+# 			'password' => shift,
+# 			'last_update' => shift,
+# 			}, $class;
+# 		return $self;
+# }
 
-sub TO_JSON { return { %{ shift() } }; }
+# sub TO_JSON { return { %{ shift() } }; }
 
 1;
