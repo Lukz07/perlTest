@@ -1,16 +1,54 @@
-<form action="" method="post">
-	<input type="submit">
-</form>
-
 <div class="content">
 	<div class="main-content">
 		<div class="row">
 			<div class="col-xs-6">
 			  	<div class="page-header"> <h2>Customer View - [edit]</h2></div>
 			  	
+			  	<form class="form-signin" name="loginForm" method="post" action="">
+		            <!-- Name -->
+		            <label for="name" class="sr-only">Name</label>
+		            <input type="text" id="name" class="form-control" placeholder="Name" name="name" autofocus>
+		            <!-- Name /-->
 
+		            <!-- Last-Name -->
+		            <label for="lastname" class="sr-only">Last Name</label>
+		            <input type="text" id="lastname" class="form-control" placeholder="Last Name" name="lastname" autofocus>
+		            <!-- Last-Name /-->
+
+		            <!-- Email /-->
+		            <label for="email" class="sr-only">Email</label>
+		            <input type="email" id="email" name="email" class="form-control" placeholder="Email">
+		            <!-- Email /-->
+
+		            <!-- Adress /-->
+		            <label for="address" class="sr-only">Adress</label>
+		            <input id="address" name="address" class="form-control" placeholder="Address">
+		            <!-- <select id="adress" name="adress">
+		            	<option>Select an adress</option>
+		            </select> -->
+		            <!-- Adress /-->
+
+		            
+
+		            <!-- Submit -->
+		            <button class="btn btn-primary btn-block save-btn">Save</button>
+		            <!-- Submit /-->
+
+		        </form>
 			</div>
-			<!-- <div class="col-xs-6">.col-xs-6</div> -->
+			<div class="col-xs-6">
+				<div class="page-header"> <h2>Customer View - [films]</h2></div>
+
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Film Name</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
 		</div>
 	</div>
 </div>
