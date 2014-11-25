@@ -115,12 +115,12 @@ sub editdata :Path("editdata") :Args(1){
 		    # connect to the database
 		  	my $dbh = DBHelper::connect();
 
-			# get a specific customer data by id
+			# get a specific staff data by id
 		  	my $sth = DBHelper::query( $dbh, qq{SELECT * FROM staff where staff_id = $id } );
 
 			my $json = {};
 
-			$json->{customer} = new Result_query( $sth->fetchrow_array() );
+			$json->{staff} = new Result_query( $sth->fetchrow_array() );
 
 			$c->stash->{json_data} = $json;
 			$c->stash->{json_status} = "OK";

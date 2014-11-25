@@ -54,7 +54,7 @@ sub add :Path('add'){
 	  	my $first_name 	= $c->request->params->{first_name};
 	  	my $last_name 	= $c->request->params->{last_name};
 	  	my $email 		= $c->request->params->{email};
-	  	my $address_id 	= $c->request->params->{address_id};
+	  	my $address_id 	= $c->request->params->{addresses};
 	  	my $active 		= $c->request->params->{active};
 	  	my $create_date	= $c->request->params->{create_date};
 	  	my $last_update	= $c->request->params->{last_update};	  		
@@ -66,7 +66,7 @@ sub add :Path('add'){
 	  	#	or die $dbh->errstr;
 		#$sth->execute()
 	  	#	or die $sth->errstr;
-	  	my $sth = query( $dbh, qq{insert into customer(store_id, first_name, last_name, email, address_id, active, create_date) 
+	  	my $sth = DBHelper::query( $dbh, qq{insert into customer(store_id, first_name, last_name, email, address_id, active, create_date) 
 								values('$store_id', '$first_name', '$last_name', '$email', '$address_id', '$active', '$create_date')} );
 
 
@@ -169,6 +169,25 @@ sub editdata :Path("editdata") :Args(1){
 
 			$json->{customer} = new CustomerModel( $sth->fetchrow_array() );
 
+			$sth = DBHelper::query( $dbh, qq{SELECT * FROM address order by address} );
+
+			my $index = 0;
+			while( my @address = $sth->fetchrow_array() ){
+				$json->{addresses}->{ $index++ } = new AddressModel( @address );
+			}
+
+			$sth = DBHelper::query( $dbh, qq{SELECT r.rental_id, f.film_id, title, customer_id
+											 FROM rental r
+											 JOIN inventory i 	on i.inventory_id = r.inventory_id
+											 JOIN film f 		on f.film_id = i.film_id
+											 WHERE r.customer_id = $id
+											 order by f.title} );
+
+			$index = 0;
+			while( my @rented = $sth->fetchrow_array() ){
+				$json->{rented}->{ $index++ } = new RentedModel( @rented );
+			}
+
 			$c->stash->{json_data} = $json;
 			$c->stash->{json_status} = "OK";
 			$c->forward('View::JSON');
@@ -196,7 +215,7 @@ sub editsave :Path("editsave") :Args(){
   	my $first_name 	= $c->request->params->{first_name};
   	my $last_name 	= $c->request->params->{last_name};
   	my $email 		= $c->request->params->{email};
-  	my $address_id 	= $c->request->params->{address_id};
+  	my $address_id 	= $c->request->params->{addresses};
   	my $active 		= $c->request->params->{active};
   	my $create_date	= $c->request->params->{create_date};
   	my $last_update	= $c->request->params->{last_update};
@@ -234,58 +253,63 @@ sub editsave :Path("editsave") :Args(){
 										last_update = '$last_update' 
 									where customer_id = $customer_id");
 
- 	#$c->stash->{customer_id} = $customer_id;
- 	#$c->stash->{store_id} = $store_id;
- 	#$c->stash->{query} = $query;
-
 	$c->forward('View::HTML');
 }
 
 
-sub edit :Path('/edit') :Args(){
-	my ( $self, $c, $id, $mode ) = @_;
-	#$c->response->body('customer->edit');
+# sub edit :Path('/edit') :Args(){
+# 	my ( $self, $c, $id, $mode ) = @_;
+# 	#$c->response->body('customer->edit');
 
-	if ( !$mode ){
-		$c->forward('View::HTML');
-	}else{
-		if ( $id > 0 ){
-			# editing
-			$c->stash->{json_status} = "ok";
-			if ( $c->request->input ){
-				# posting
-				$c->response->body("posting");
-			}else{
-				# viewing
+# 	if ( !$mode ){
+# 		$c->forward('View::HTML');
+# 	}else{
+# 		if ( $id > 0 ){
+# 			# editing
+# 			$c->stash->{json_status} = "ok";
+# 			if ( $c->request->input ){
+# 				# posting
+# 				$c->response->body("posting");
+# 			}else{
+# 				# viewing
 
-		        # connect to the database
-				#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-	  			#	or die $DBI::errstr;
-  				my $dbh = DBHelper::connect();
+# 		        # connect to the database
+# 				#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+# 	  			#	or die $DBI::errstr;
+#   				my $dbh = DBHelper::connect();
 
-				# get data from 
-				#my $statement = qq{SELECT * FROM customer where customer_id = $id };
-				#my $sth = $dbh->prepare($statement)
-			  	#	or die $dbh->errstr;
-				#$sth->execute()
-			  	#	or die $sth->errstr;
-			  	my $sth = query( $dbh, qq{ SELECT * FROM customer where customer_id = $id } );
+# 				# get data from 
+# 				#my $statement = qq{SELECT * FROM customer where customer_id = $id };
+# 				#my $sth = $dbh->prepare($statement)
+# 			  	#	or die $dbh->errstr;
+# 				#$sth->execute()
+# 			  	#	or die $sth->errstr;
+# 			  	my $sth = query( $dbh, qq{ SELECT * FROM customer where customer_id = $id } );
 
-				my $json = {};
+# 				my $json = {};
 
-				$json->{customer} = new CustomerModel( $sth->fetchrow_array() );
+# 				$json->{customer} = new CustomerModel( $sth->fetchrow_array() );
 
-				$c->stash->{json_data} = $json;
-				$c->stash->{json_status} = "OK";
-				$c->forward('View::JSON');
-			}
+# 				$c->stash->{json_data} = $json;
+# 				$c->stash->{json_status} = "OK";
+# 				$c->forward('View::JSON');
+# 			}
 
-		}else{
-			# creating
-			$c->stash->{json_status} = "error";
-			$c->forward('View::HTML');
-		}
-	}
+# 		}else{
+# 			# creating
+# 			$c->stash->{json_status} = "error";
+# 			$c->forward('View::HTML');
+# 		}
+# 	}
+# }
+
+sub delete :Path("delete") :Args(1) {
+	my ( $self, $c, $id ) = @_;
+	# connect to the database
+	my $dbh = DBHelper::connect();
+	# execute the delete query
+ 	my $sth = DBHelper::query( $dbh, "DELETE FROM customer WHERE customer_id = $id" );
+ 	$c->forward('View::HTML');
 }
 
 =encoding utf8
