@@ -1,6 +1,7 @@
 package MvcTest::Controller::storemain;
 use Moose;
 use namespace::autoclean;
+use MvcTest::DB::DBHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
