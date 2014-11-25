@@ -7,6 +7,7 @@ use strict;
 use warnings;
 use JSON;
 use MvcTest::Model::Result;
+use MvcTest::DB::DBHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -45,15 +46,10 @@ my $password    = $c->request->params->{password} || 'N/A';
 my $cgi = CGI->new;
 
 # connect to the database
-my $dbh = DBI->connect("DBI:mysql:database=perltest", "perltestUser", "Globant01") 
-  or die $DBI::errstr;
+my $dbh = DBHelper::connect();
 
 # check the username and password in the database
-my $statement = qq{SELECT id FROM users WHERE username=? and password=?};
-my $sth = $dbh->prepare($statement)
-  or die $dbh->errstr;
-$sth->execute($username, $password)
-  or die $sth->errstr;
+my $sth = DBHelper::query($dbh, qq{SELECT id FROM users WHERE username=? and password=?}, $username, $password);
 my ($userID) = $sth->fetchrow_array;
 
 # create a JSON string according to the database result

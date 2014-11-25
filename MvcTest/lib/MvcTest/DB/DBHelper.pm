@@ -10,9 +10,10 @@ sub connect{
 sub query{
 	my $dbh = shift;
 	my $statement = shift;
+
 	my $sth = $dbh->prepare($statement)
 	  		or die $dbh->errstr;
-	$sth->execute()
+	$sth->execute(@_)
 	  		or die $sth->errstr;
 	return $sth;
 }
