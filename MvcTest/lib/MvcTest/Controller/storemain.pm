@@ -68,7 +68,7 @@ sub add :Path('add'){
 	  	#	or die $sth->errstr;
 
 	  	my $sth = query( $dbh, qq{insert into staff(first_name, last_name, address_id, picture, email, store_id, active, username, password, last_update) 
-		 					values('$first_name', '$last_name', '$address_id', '$picture', '$email', '$store_id', '$active', '$username', '$password', '$last_update')};
+		 					values('$first_name', '$last_name', '$address_id', '$picture', '$email', '$store_id', '$active', '$username', '$password', '$last_update')});
 
 		#$c->stash(template => 'customer/editsave.html');
 
