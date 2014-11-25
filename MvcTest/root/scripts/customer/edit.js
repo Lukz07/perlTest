@@ -1,4 +1,7 @@
 $(function(){
+	
+	var globalJsonData;
+
 	function init(){
 		renderPage(1);
 	};
@@ -6,32 +9,65 @@ $(function(){
 	function renderPage(pageNumber){
 		$.ajax({
 			url: path+'/editdata/'+pageNumber,
-			success: function(data){
+			success: function(data){				
 
 				var jsonData= null;
-				jsonData = data.json_data;
+				jsonData = globalJsonData = data.json_data;
+				
+				$('#name').val(jsonData.customer.first_name);
+				$('#lastname').val(jsonData.customer.last_name);
+				$('#email').val(jsonData.customer.email);
 
-				console.log(jsonData)
+				for ( i in jsonData.addresses) {
+					if (jsonData.addresses[i].address_id == jsonData.customer.address_id){
+						$('#adress').val(jsonData.addresses[i].address);
+					}
+				};
 
-				// $.each(jsonData, function(i, val){
-				// 	$('table tbody').append('<tr id="'+i+'"></tr>');
-				// 	$('table tbody #'+val.customer_id+'').append('<td>'+val.customer_id+'</td>');
-				// 	$('table tbody #'+val.customer_id+'').append('<td>'+val.first_name+'</td>');
-				// 	$('table tbody #'+val.customer_id+'').append('<td>'+val.last_name+'</td>');
-				// 	$('table tbody #'+val.customer_id+'').append('<td><button id="'+val.customer_id+'" type="button" class="btn btn-default btn-xs">Edit</button></td>');
-				// 	$('table tbody #'+val.customer_id+' button').bind('click', function(id){
-				// 		id = $(this).attr('id');
-						
-				// 		//editar pantalla: edito href para pasar id por paramatro.
-				// 		window.location.href = "customer/editdata/"+id;
-				// 	});
-				// });
+				for ( v in jsonData.rented) {
+					if (jsonData.rented[v].customer_id == jsonData.customer.customer_id){
+
+						$('table tbody').append('<tr id="'+jsonData.rented[v].rental_id+'"></tr>');
+						$('table tbody #'+jsonData.rented[v].rental_id+'').append('<td>'+jsonData.rented[v].rental_id+'</td>');
+						$('table tbody #'+jsonData.rented[v].rental_id+'').append('<td>'+jsonData.rented[v].title+'</td>');
+
+					}
+				};
 			},
 			error: function(data){
 				alert(data.responseText);
 			}
 		})	
 	};
+
+	$('.save-btn').on('click', function(e){
+		e.preventDefault();
+		$.ajax({
+			url: path+'/editsave/',
+			type: 'POST',
+			dataType: 'json',
+			data: {
+				customer_id : globalJsonData.customer.customer_id,
+				store_id : globalJsonData.customer.store_id,
+				first_name : $('#name').val(),
+				last_name : $('#lastname').val(),
+				email : $('#email').val(),
+				addresses : $('#address').val(),
+				active : globalJsonData.customer.active,
+				create_date : globalJsonData.customer.create_date,
+				last_update : globalJsonData.customer.last_update
+			},
+			success: function(data){				
+
+				console.log(data);
+				alert("Success!!. Data saved.");
+			},
+			error: function(error){
+				alert(error.statusText);
+				console.log(error);
+			}
+		})
+	})
 
 	init();
 })
