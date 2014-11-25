@@ -11,7 +11,7 @@ $(function(){
 
 	function renderPage(pageNumber){
 		$.ajax({
-			url: 'customer/page/'+pageNumber,
+			url: path+'/page/'+pageNumber,
 			success: function(data){
 
 				var jsonData= null;

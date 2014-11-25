@@ -32,5 +32,7 @@
 		</div>
 	</div>
 </div>
-
-<script src="scripts/customer/main.js"></script>
+<script>
+	var path = "[% c.uri_for %]";
+</script>
+<script src="[% c.uri_for('/scripts/customer/main.js') %]"></script>
