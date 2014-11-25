@@ -19,6 +19,11 @@ a:hover {
   border: 1px solid #fff;
 }
 
+/* Custom default table */
+
+td {
+  text-align: left;
+}
 
 /*
  * Base structure
@@ -34,6 +39,8 @@ body {
   text-align: center;
   text-shadow: 0 1px 3px rgba(0,0,0,.5);
 }
+
+
 
 /* Extra markup and styles for table-esque vertical and horizontal centering */
 .site-wrapper {
@@ -119,6 +126,17 @@ body {
 
 
 /*
+ * Tables
+ */
+
+table {
+  font-size: 10px;
+}
+thead {
+  text-transform: uppercase;
+}
+
+/*
  * Footer
  */
 
@@ -152,6 +170,11 @@ body {
   .cover-container {
     width: 100%; /* Must be percentage or pixels for horizontal alignment */
   }
+  .container-700 {
+    width: 700px;
+    height: 500px;
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: 992px) {
@@ -160,8 +183,63 @@ body {
   .cover-container {
     width: 700px;
   }
+
+  /* Pull out the header and footer */
+  .masthead {
+    position: fixed;
+    top: 0;
+  }
+  .mastfoot {
+    position: fixed;
+    bottom: 0;
+  }
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  .container-700 {
+    width: 700px;
+    height: 500px;
+    margin: 0 auto;
+  }
+
 }
 
+@media (min-width: 1024px) {
+
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 700px;
+  }
+
+  /* Pull out the header and footer */
+  .masthead {
+    position: fixed;
+    top: 0;
+  }
+  .mastfoot {
+    position: fixed;
+    bottom: 0;
+  }
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+  .container-700 {
+    width: 700px;
+    height: 500px;
+    margin: 0 auto;
+  }
+
+}
 
 /* Sing Up */
 

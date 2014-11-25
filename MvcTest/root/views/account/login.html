@@ -1,34 +1,6 @@
-    [% META title = 'Sing In' -%]
-
-    <div class="site-wrapper">
-
-      <div class="site-wrapper-inner">
-
-        <div class="cover-container">
-
-          <!-- Navigation -->
-          <div class="masthead clearfix">
-            <div class="inner">
-              <h3 class="masthead-brand">MvcTest</h3>
-              <nav>
-                <ul class="nav masthead-nav">
-                  <li><a href="[% c.uri_for(c.controller('home').action_for('index')) %]">Home</a></li>
-                  <li><a href="[% c.uri_for(c.controller('customer').action_for('index')) %]">Customer</a></li>
-                  <li><a href="[% c.uri_for(c.controller('staff').action_for('index')) %]">Staff</a></li>
-                  <li class="active"><a href="[% c.uri_for(c.controller('account').action_for('index')) %]">Sing In</a></li>
-                </ul>
-              </nav>
-            </div>
-          </div>
-          <!-- Navigation / -->
-
-          <!-- Error Msg -->
-          [% IF result.error %]
-          <div id="loginResult">
-            [% result.message %]
-          </div>
-          [%END%]
-          <!-- Error Msg / -->
+          <!-- Section Title / -->
+          [% META title = 'Sing In' %]
+          <!-- Section Title / -->
 
           <!-- Sing Up -->
           <form class="form-signin" name="loginForm" method="post" action="[% c.uri_for('login') %]">
@@ -58,20 +30,6 @@
           </form>
           <!-- Sing Up / -->
 
-          <!-- Footer -->
-          <div class="mastfoot">
-            <div class="inner">
-              <p>Template for test.</p>
-            </div>
-          </div>
-          <!-- Footer / -->
-
-        </div> <!-- cover-Container / -->
-
-      </div><!-- site-wrapper-inner -->
-      
-    </div><!-- site-wrapper -->
-
-    <!-- LogIn Script -->
-    <script type="text/javascript" src="[% c.uri_for('/scripts/login/login.js') %]"></script>
-    <!-- LogIn Script / -->
+          <!-- LogIn Script -->
+          <script type="text/javascript" src="[% c.uri_for('/scripts/login/login.js') %]"></script>
+          <!-- LogIn Script / -->
