@@ -4,9 +4,9 @@
 			<div class="col-xs-6">
 			  	<div class="page-header"> <h2>Home View</h2></div>
 			  	<ul class="list-group">
-					<a  href="/customer" class="list-group-item">Customer view</a>
-					<a  href="" class="list-group-item">Staff view</a>
-					<a  href="" class="list-group-item">Films view</a>
+					<a  href="[% c.uri_for(c.controller('customer').action_for('index')) %]" class="list-group-item">Customer view</a>
+					<a  href="[% c.uri_for(c.controller('home').action_for('index')) %]" class="list-group-item">Staff view</a>
+					<a  href="[% c.uri_for(c.controller('film').action_for('index')) %]" class="list-group-item">Films view</a>
 				</ul>
 			</div>
 		</div>

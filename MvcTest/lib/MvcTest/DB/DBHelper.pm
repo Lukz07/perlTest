@@ -1,7 +1,7 @@
 package DBHelper;
 
 my $db_username = "perltestUser";
-my $db_password = "123456";
+my $db_password = "Globant01";
 
 sub connect{
 	return DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
