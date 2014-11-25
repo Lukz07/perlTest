@@ -160,7 +160,7 @@ sub editsave :Path("editsave") :Args(){
 								last_name	= '$last_name',
 								address_id	= '$address_id',
 								picture	    = '$picture',
-								email		= $email,
+								email		= '$email',
 								store_id    = '$store_id',
 								active      = '$active',
 								username    = '$username',
@@ -168,7 +168,7 @@ sub editsave :Path("editsave") :Args(){
 								last_update = '$last_update' 
 								where staff_id = $staff_id");
 
-	$c->forward('View::HTML');
+	$c->forward('View::JSON');
 }
 
 sub edit :Path('/edit') :Args(){
