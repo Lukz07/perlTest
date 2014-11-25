@@ -176,6 +176,18 @@ sub editdata :Path("editdata") :Args(1){
 				$json->{addresses}->{ $index++ } = new AddressModel( @address );
 			}
 
+			$sth = DBHelper::query( $dbh, qq{SELECT r.rental_id, f.film_id, title, customer_id
+											 FROM rental r
+											 JOIN inventory i 	on i.inventory_id = r.inventory_id
+											 JOIN film f 		on f.film_id = i.film_id
+											 WHERE r.customer_id = $id
+											 order by f.title} );
+
+			$index = 0;
+			while( my @rented = $sth->fetchrow_array() ){
+				$json->{rented}->{ $index++ } = new RentedModel( @rented );
+			}
+
 			$c->stash->{json_data} = $json;
 			$c->stash->{json_status} = "OK";
 			$c->forward('View::JSON');
@@ -296,10 +308,7 @@ sub delete :Path("delete") :Args(1) {
 	# connect to the database
 	my $dbh = DBHelper::connect();
 	# execute the delete query
- 	my $sth = DBHelper::query( 
- 				$dbh,
- 				"DELETE FROM customer WHERE customer_id = $id"
- 			);
+ 	my $sth = DBHelper::query( $dbh, "DELETE FROM customer WHERE customer_id = $id" );
  	$c->forward('View::HTML');
 }
 
