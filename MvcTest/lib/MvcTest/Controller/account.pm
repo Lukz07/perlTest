@@ -39,46 +39,42 @@ sub index :Path :Args(0) {
 sub login :Local :Args(0) {
 	my ($self, $c) = @_;
 
-my $username     = $c->request->params->{username} || 'N/A';
-my $password    = $c->request->params->{password} || 'N/A';
+  my $username     = $c->request->params->{username} || 'N/A';
+  my $password    = $c->request->params->{password} || 'N/A';
 
-# read the CGI params
-my $cgi = CGI->new;
+  # read the CGI params
+  my $cgi = CGI->new;
 
-# connect to the database
-my $dbh = DBHelper::connect();
+  # connect to the database
+  my $dbh = DBHelper::connect();
 
-# check the username and password in the database
-my $sth = DBHelper::query($dbh, qq{SELECT id FROM users WHERE username=? and password=?}, $username, $password);
-my ($userID) = $sth->fetchrow_array;
+  # check the username and password in the database
+  my $sth = DBHelper::query($dbh, qq{SELECT id FROM users WHERE username=? and password=?}, $username, $password);
+  my ($userID) = $sth->fetchrow_array;
 
-# create a JSON string according to the database result
-my $message = ($userID) ? 
-  qq{{"success" : "login is successful", "userid" : "$userID"}} : 
-  qq{{"error" : "username or password is wrong"}};
+  # create a JSON string according to the database result
+  my $message = ($userID) ? 
+    qq{{"success" : "login is successful", "userid" : "$userID"}} : 
+    qq{{"error" : "username or password is wrong"}};
 
-my $error = ($userID) ? 0 : 1;
+  my $error = ($userID) ? 0 : 1;
 
-my $result = new Result($error, $message, $userID);
+  my $result = new Result($error, $message, $userID);
 
-$c->log->debug($result->{'error'});
-$c->log->debug($result->{'message'});
-$c->log->debug($result->{'userid'});
+  $c->log->debug($result->{'error'});
+  $c->log->debug($result->{'message'});
+  $c->log->debug($result->{'userid'});
 
-if($error == 0)
-{
-	$c->response->redirect($c->uri_for($c->controller('home')->action_for('index')));
-}
-else
-{
-	$c->stash(template => 'account/login.html');
-	$c->stash(result => $result);
-	$c->forward('View::HTML');
-}
-
-#$c->stash->{foo} = $result;
-#$c->forward('View::JSON');
-
+  if($error == 0)
+  {
+  	$c->response->redirect($c->uri_for($c->controller('home')->action_for('index')));
+  }
+  else
+  {
+  	$c->stash(template => 'account/login.html');
+  	$c->stash(result => $result);
+  	$c->forward('View::HTML');
+  }
 }
 =encoding utf8
 
