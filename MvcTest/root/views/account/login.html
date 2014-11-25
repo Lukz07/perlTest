@@ -1,32 +1,77 @@
-[% META title = 'Login' -%]
-<div id="loginContent" class="container">
-  [% IF result.error %]
-  <div id="loginResult">
-    [% result.message %]
-  </div>
-  [%END%]
-  <form id="loginForm" name="loginForm" method="post" action="[% c.uri_for('login') %]">
-    <fieldset>
-      <legend>Enter information</legend>
-      <p>
-      <label for="username">Username</label>
-      <br />
-      <input type="text" id="username" name="username" class="text" size="20" />
-      </p>
-      <p>
-      <label for="password">Password</label>
-      <br />
-      <input type="password" id="password" name="password" class="text" size="20" />
-      </p>
-      <p>
-      <button type="submit" id="login" class="button positive">
-      <img alt="ok" src=
-      "http://www.blueprintcss.org/blueprint/plugins/buttons/icons/tick.png" />
-      Login
-      </button>
-      </p>
-    </fieldset>
-  </form>
-</div>
+    [% META title = 'Sing In' -%]
 
-<script type="text/javascript" src="[% c.uri_for('/scripts/login/login.js') %]"></script>
+    <div class="site-wrapper">
+
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <!-- Navigation -->
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">MvcTest</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li><a href="[% c.uri_for(c.controller('home').action_for('index')) %]">Home</a></li>
+                  <li><a href="[% c.uri_for(c.controller('customer').action_for('index')) %]">Customer</a></li>
+                  <li><a href="[% c.uri_for(c.controller('staff').action_for('index')) %]">Staff</a></li>
+                  <li class="active"><a href="[% c.uri_for(c.controller('account').action_for('index')) %]">Sing In</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <!-- Navigation / -->
+
+          <!-- Error Msg -->
+          [% IF result.error %]
+          <div id="loginResult">
+            [% result.message %]
+          </div>
+          [%END%]
+          <!-- Error Msg / -->
+
+          <!-- Sing Up -->
+          <form class="form-signin" name="loginForm" method="post" action="[% c.uri_for('login') %]">
+            <h2 class="form-signin-heading">Sing In</h2>
+            <!-- Username -->
+            <label for="username" class="sr-only">Username</label>
+            <input type="text" id="username" class="form-control" placeholder="Username" name="username"required autofocus>
+            <!-- Username /-->
+
+            <!-- Password /-->
+            <label for="password" class="sr-only">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            <!-- Password /-->
+
+            <!-- Remember me -->
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" value="remember-me">Remember me
+              </label>
+            </div>
+            <!-- Remember me /-->
+
+            <!-- Submit -->
+            <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+            <!-- Submit /-->
+
+          </form>
+          <!-- Sing Up / -->
+
+          <!-- Footer -->
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Template for test.</p>
+            </div>
+          </div>
+          <!-- Footer / -->
+
+        </div> <!-- cover-Container / -->
+
+      </div><!-- site-wrapper-inner -->
+      
+    </div><!-- site-wrapper -->
+
+    <!-- LogIn Script -->
+    <script type="text/javascript" src="[% c.uri_for('/scripts/login/login.js') %]"></script>
+    <!-- LogIn Script / -->

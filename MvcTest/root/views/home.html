@@ -1,16 +1,48 @@
-<div class="content">
-	<div class="main-content">
-		<div class="row">
-			<div class="col-xs-6">
-			  	<div class="page-header"> <h2>Home View</h2></div>
-			  	<ul class="list-group">
-					<a  href="/customer" class="list-group-item">Customer view</a>
-					<a  href="" class="list-group-item">Staff view</a>
-					<a  href="" class="list-group-item">Films view</a>
-				</ul>
-			</div>
-		</div>
-	</div>
-</div>
+    [% META title = 'Home' -%]
 
+    <div class="site-wrapper">
 
+      <div class="site-wrapper-inner">
+
+        <div class="cover-container">
+
+          <!-- Navigation -->
+          <div class="masthead clearfix">
+            <div class="inner">
+              <h3 class="masthead-brand">MvcTest</h3>
+              <nav>
+                <ul class="nav masthead-nav">
+                  <li class="active"><a href="[% c.uri_for(c.controller('home').action_for('index')) %]">Home</a></li>
+                  <li><a href="[% c.uri_for(c.controller('customer').action_for('index')) %]">Customer</a></li>
+                  <li><a href="[% c.uri_for(c.controller('staff').action_for('index')) %]">Staff</a></li>
+                  <li><a href="[% c.uri_for(c.controller('account').action_for('index')) %]">Sing In</a></li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+          <!-- Navigation / -->
+
+          <!-- Home -->
+          <div class="inner cover">
+            <h1 class="cover-heading">This are other important links.</h1>
+            <!--p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p-->
+            <p class="lead">
+              <a href="https://github.com/Lukz07/perlTest" class="btn btn-lg btn-primary" target="new">Github</a>
+              <!--a href="#" class="btn btn-lg btn-primary">Learn more</a-->
+            </p>
+          </div>
+          <!-- Home / -->
+
+          <!-- Footer -->
+          <div class="mastfoot">
+            <div class="inner">
+              <p>Template for test.</p>
+            </div>
+          </div>
+          <!-- Footer / -->
+
+        </div> <!-- cover-Container / -->
+
+      </div><!-- site-wrapper-inner -->
+      
+    </div><!-- site-wrapper -->
