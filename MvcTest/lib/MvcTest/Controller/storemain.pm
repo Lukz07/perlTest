@@ -1,6 +1,7 @@
 package MvcTest::Controller::storemain;
 use Moose;
 use namespace::autoclean;
+use MvcTest::DB::DBHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -38,12 +39,13 @@ sub add :Path('add'){
 	#$c->response->body('Matched MvcTest::Controller::customer in add.'.$db_username);
 
     # connect to the database
-	my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-  		or die $DBI::errstr;
+	#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+  	#	or die $DBI::errstr;
+  	my $dbh = DBHelper::connect();
 
 	$c->forward('View::HTML');
 	if ( $c->request->params->{staff_id} > 0 ){
-		#$c->stash(template => 'customer/edit.html');
+		#$c->stash(template => 'store/edit.html');
 
 	  	#my $staff_id 	= $c->request->params->{store_id};
 	  	my $first_name 	= $c->request->params->{first_name};
@@ -58,12 +60,15 @@ sub add :Path('add'){
 	  	my $last_update	= $c->request->params->{last_update};	  		
 
 		# get a specific customer data by id
-		my $statement = qq{insert into staff(first_name, last_name, address_id, picture, email, store_id, active, username, password, last_update) 
-		 					values('$first_name', '$last_name', '$address_id', '$picture', '$email', '$store_id', '$active', '$username', '$password', '$last_update')};
-		my $sth = $dbh->prepare($statement)
-	  		or die $dbh->errstr;
-		$sth->execute()
-	  		or die $sth->errstr;
+		#my $statement = qq{insert into staff(first_name, last_name, address_id, picture, email, store_id, active, username, password, last_update) 
+		# 					values('$first_name', '$last_name', '$address_id', '$picture', '$email', '$store_id', '$active', '$username', '$password', '$last_update')};
+		#my $sth = $dbh->prepare($statement)
+	  	#	or die $dbh->errstr;
+		#$sth->execute()
+	  	#	or die $sth->errstr;
+
+	  	my $sth = query( $dbh, qq{insert into staff(first_name, last_name, address_id, picture, email, store_id, active, username, password, last_update) 
+		 					values('$first_name', '$last_name', '$address_id', '$picture', '$email', '$store_id', '$active', '$username', '$password', '$last_update')});
 
 		#$c->stash(template => 'customer/editsave.html');
 
@@ -82,18 +87,20 @@ sub page :Path('page') :Args(1){
 	$c->stash->{page} = $page;
 
     # connect to the database
-	my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-  		or die $DBI::errstr;
+	#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+  	#	or die $DBI::errstr;
+  	my $dbh = DBHelper::connect();
 
   	my $page_size = 10;
   	my $start = $page_size*($page-1);
 
 	# check the username and password in the database
-	my $statement = qq{SELECT * FROM staff order by staff_id LIMIT $start, $page_size};
-	my $sth = $dbh->prepare($statement)
-  		or die $dbh->errstr;
-	$sth->execute()
-  		or die $sth->errstr;
+	#my $statement = qq{SELECT * FROM staff order by staff_id LIMIT $start, $page_size};
+	#my $sth = $dbh->prepare($statement)
+  	#	or die $dbh->errstr;
+	#$sth->execute()
+  	#	or die $sth->errstr;
+  	my $sth = DBHelper::query($dbh, qq{SELECT * FROM staff order by staff_id LIMIT $start, $page_size } );
 
 	my $json = {};
 
@@ -105,11 +112,12 @@ sub page :Path('page') :Args(1){
 	$c->stash->{json_status} = "OK";
 
 	# calculo la cantidad total de páginas
-	$statement = qq{SELECT count(*) as cantidad FROM staff };
-	$sth = $dbh->prepare($statement)
-  		or die $dbh->errstr;
-	$sth->execute()
-  		or die $sth->errstr;
+	#$statement = qq{SELECT count(*) as cantidad FROM staff };
+	#$sth = $dbh->prepare($statement)
+  	#	or die $dbh->errstr;
+	#$sth->execute()
+  	#	or die $sth->errstr;
+  	$sth = DBHelper::query($dbh, qq{ SELECT count(*) as cantidad FROM staff } );
 
 	my @num_rows = $sth->fetchrow_array();
 
@@ -120,10 +128,10 @@ sub page :Path('page') :Args(1){
 }
 
 # intento de capturar el caso sin parametros para que avise del error
-sub editview :Path("editview"){
-	my ( $self, $c ) = @_;
-	$c->response->body('debe especificar un Id de staff');
-}
+#sub editview :Path("editview"){
+#	my ( $self, $c ) = @_;
+#	$c->response->body('debe especificar un Id de staff');
+#}
 
 sub editview :Path("editview") :Args(1){
 	my ( $self, $c, $id ) = @_;
@@ -144,15 +152,17 @@ sub editdata :Path("editdata") :Args(1){
 			# viewing
 
 		    # connect to the database
-			my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-		  		or die $DBI::errstr;
+			#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+		  	#	or die $DBI::errstr;
+		  	my $dbh = DBHelper::connect();
 
 			# get a specific customer data by id
-			my $statement = qq{SELECT * FROM staff where staff_id = $id };
-			my $sth = $dbh->prepare($statement)
-		  		or die $dbh->errstr;
-			$sth->execute()
-		  		or die $sth->errstr;
+			#my $statement = qq{SELECT * FROM staff where staff_id = $id };
+			#my $sth = $dbh->prepare($statement)
+		  	#	or die $dbh->errstr;
+			#$sth->execute()
+		  	#	or die $sth->errstr;
+		  	my $sth = DBHelper::query( $dbh, qq{SELECT * FROM staff where staff_id = $id } );
 
 			my $json = {};
 
@@ -175,8 +185,9 @@ sub editdata :Path("editdata") :Args(1){
 sub editsave :Path("editsave") :Args(){
 	my ( $self, $c ) = @_;
 
-	my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-  		or die $DBI::errstr;
+	#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+  	#	or die $DBI::errstr;
+  	my $dbh = DBHelper::connect();
 
 	  	my $staff_id 	= $c->request->params->{store_id};
 	  	my $first_name 	= $c->request->params->{first_name};
@@ -190,39 +201,50 @@ sub editsave :Path("editsave") :Args(){
 	  	my $password	= $c->request->params->{password};
 	  	my $last_update	= $c->request->params->{last_update};
 
-  	#my $query = "UPDATE customer 
-  	#			 set store_id = $store_id 
-  	#			 where customer_id = $customer_id";
 
-	# check the username and password in the database
-	my $statement = qq{	
-		UPDATE staff 
-		set staff_id    = '$staff_id', 
-			first_name  = '$first_name',
-			last_name	= '$last_name',
-			address_id	= '$address_id',
-			picture	    = '$picture',
-			email		= $email,
-			store_id    = '$store_id',
-			active      = '$active',
-			username    = '$username',
-			password    = '$password',
-			last_update = '$last_update'
-		where staff_id = $staff_id};
+	# Update Data
+	#my $statement = qq{	
+	#	UPDATE staff 
+	#	set staff_id    = '$staff_id', 
+	#		first_name  = '$first_name',
+	#		last_name	= '$last_name',
+	#		address_id	= '$address_id',
+	#		picture	    = '$picture',
+	#		email		= $email,
+	#		store_id    = '$store_id',
+	#		active      = '$active',
+	#		username    = '$username',
+	#		password    = '$password',
+	#		last_update = '$last_update'
+	#	where staff_id = $staff_id};
 	#my $statement = $query;
-	my $sth = $dbh->prepare($statement)
-  		or die $dbh->errstr;
-	$sth->execute()
- 		or die $sth->errstr;
+	#my $sth = $dbh->prepare($statement)
+  	#	or die $dbh->errstr;
+	#$sth->execute()
+ 	#	or die $sth->errstr;
 
- 	$c->stash->{staff_id} = $staff_id;
- 	$c->stash->{store_id} = $store_id;
+ 	my $sth = DBHelper::query( $dbh,"UPDATE staff 
+								set staff_id    = '$staff_id', 
+								first_name  = '$first_name',
+								last_name	= '$last_name',
+								address_id	= '$address_id',
+								picture	    = '$picture',
+								email		= $email,
+								store_id    = '$store_id',
+								active      = '$active',
+								username    = '$username',
+								password    = '$password',
+								last_update = '$last_update' 
+								where staff_id = $staff_id");
+
+ 	#$c->stash->{staff_id} = $staff_id;
+ 	#$c->stash->{store_id} = $store_id;
  	#$c->stash->{query} = $query;
 
 	$c->forward('View::HTML');
 }
 
-sub edit :Path('/edit') :Args(1){
+sub edit :Path('/edit') :Args(){
 	my ( $self, $c, $id, $mode ) = @_;
 	#$c->response->body('customer->edit');
 
@@ -239,15 +261,17 @@ sub edit :Path('/edit') :Args(1){
 				# viewing
 
 			    # connect to the database
-				my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
-			  		or die $DBI::errstr;
+				#my $dbh = DBI->connect("DBI:mysql:database=sakila", $db_username, $db_password) 
+			  	#	or die $DBI::errstr;
+			  	my $dbh = DBHelper::connect();
 
-				# check the username and password in the database
-				my $statement = qq{SELECT * FROM staff where staff_id = $id };
-				my $sth = $dbh->prepare($statement)
-			  		or die $dbh->errstr;
-				$sth->execute()
-			  		or die $sth->errstr;
+				# get data from
+				#my $statement = qq{SELECT * FROM staff where staff_id = $id };
+				#my $sth = $dbh->prepare($statement)
+			  	#	or die $dbh->errstr;
+				#$sth->execute()
+			  	#	or die $sth->errstr;
+			  	my $sth = query( $dbh, qq{ SELECT * FROM staff where staff_id = $id } );
 
 				my $json = {};
 
