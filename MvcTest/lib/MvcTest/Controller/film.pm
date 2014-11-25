@@ -1,6 +1,9 @@
 package MvcTest::Controller::film;
 use Moose;
 use namespace::autoclean;
+use MvcTest::Model::FilmModel;
+use MvcTest::Helpers::MathHelper;
+use MvcTest::DB::DBHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -24,10 +27,40 @@ Catalyst Controller.
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
-    $c->response->body('Matched MvcTest::Controller::film in film.');
+    $c->forward('View::HTML');
 }
 
+sub page :Path('page') :Args(1){
+		my ( $self, $c, $page ) = @_;
 
+	$c->stash->{page} = $page;
+
+    # connect to the database
+	my $dbh = DBHelper::connect();
+
+  	my $page_size = 10;
+  	my $start = $page_size*($page-1);
+
+	# check the username and password in the database
+	my $sth = DBHelper::query($dbh, qq{SELECT film_id, title, description, release_year, rating FROM film order by film_id LIMIT $start, $page_size } );
+
+	my $json = {};
+
+	while( my @customer = $sth->fetchrow_array() ){
+		$json->{ $customer[0] } = new FilmModel( @customer );
+	}
+
+	$c->stash->{json_data} = $json;
+	$c->stash->{json_status} = "OK";
+
+	# calculo la cantidad total de páginas
+  	$sth = DBHelper::query($dbh, qq{ SELECT count(*) as cantidad FROM film } );  	
+
+	my @num_rows = $sth->fetchrow_array();
+	$c->stash->{total_pages} = MathHelper::round( $num_rows[0]/10 );
+
+	$c->forward('View::JSON');
+}
 
 =encoding utf8
 
