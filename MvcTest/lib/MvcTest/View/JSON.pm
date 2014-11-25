@@ -29,7 +29,6 @@ it under the same terms as Perl itself.
 
 sub encode_json {
       my($self, $c, $data) = @_;
-      print "<pre>";
       to_json($data, {allow_blessed=>1,convert_blessed=>1});
 }
 
