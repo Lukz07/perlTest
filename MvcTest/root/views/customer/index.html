@@ -2,7 +2,19 @@
 	        [% META title = 'Customer' %]
 			<!-- Section Title / -->
 
-			<div class="container-700">
+			<!-- Breadcrumb -->
+			<ol class="breadcrumb">
+			  <li><a href="[% c.uri_for(c.controller('home').action_for('index')) %]">MvcTest</a></li>
+			  <li class="active">Customer</li>
+			</ol>
+			<!-- Breadcrumb / -->
+
+			<!-- Title -->
+			<h2 class="cover-heading">Customer</h2>
+			<!-- Title / -->
+
+			<!-- Table -->
+			<div>
 				<table class="table">
 					<thead>
 						<tr>
@@ -17,26 +29,33 @@
 					</tbody>
 				</table>
 
-				<nav>
-					<ul class="pagination pagination-sm">
-						<!-- <li>
-							<a href="#">
-								<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
-							</a>
-						</li> -->
-						<li><a href="">1</a></li>
-						<li><a href="">2</a></li>
-						<li><a href="">3</a></li>
-						<li><a href="">4</a></li>
-						<li><a href="">5</a></li>
-						<!-- <li>
-							<a href="#">
-								<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
-							</a>
-						</li> -->
-					</ul>
-				</nav>
-			</div><!-- 700px / -->
+				<!-- Table Pagination -->
+				<div class="text-center">
+					<nav>
+						<ul class="pagination pagination-sm">
+							<!-- <li>
+								<a href="#">
+									<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
+								</a>
+							</li> -->
+							<li><a href="">1</a></li>
+							<li><a href="">2</a></li>
+							<li><a href="">3</a></li>
+							<li><a href="">4</a></li>
+							<li><a href="">5</a></li>
+							<!-- <li>
+								<a href="#">
+									<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
+								</a>
+							</li> -->
+						</ul>
+					</nav>
+				</div>
+				<!-- Table Pagination / -->
+
+			</div><!-- Div / -->
+			<!-- Table / -->
+
 
 			<script>
 				var path = "[% c.uri_for %]";
