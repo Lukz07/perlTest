@@ -1,44 +1,45 @@
-	        <!-- Section Title / -->
-	        [% META title = 'Customer' %]
-			<!-- Section Title / -->
+<!-- Section Title / -->
+[% META title = 'Customer' %]
+<!-- Section Title / -->
 
-			<div class="container-700">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>First Name</th>
-							<th>Last Name</th>
-							<th>Actions</th>
-						</tr>
-					</thead>
-					<tbody>
-						
-					</tbody>
-				</table>
+<div class="container-700">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
 
-				<nav>
-					<ul class="pagination pagination-sm">
-						<!-- <li>
-							<a href="#">
-								<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
-							</a>
-						</li> -->
-						<li><a href="">1</a></li>
-						<li><a href="">2</a></li>
-						<li><a href="">3</a></li>
-						<li><a href="">4</a></li>
-						<li><a href="">5</a></li>
-						<!-- <li>
-							<a href="#">
-								<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
-							</a>
-						</li> -->
-					</ul>
-				</nav>
-			</div><!-- 700px / -->
+	<nav>
+		<ul class="pagination pagination-sm">
+			<!-- <li>
+				<a href="#">
+					<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
+				</a>
+			</li> -->
+			<li><a href="">1</a></li>
+			<li><a href="">2</a></li>
+			<li><a href="">3</a></li>
+			<li><a href="">4</a></li>
+			<li><a href="">5</a></li>
+			<!-- <li>
+				<a href="#">
+					<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
+				</a>
+			</li> -->
+		</ul>
+	</nav>
+</div><!-- 700px / -->
 
-			<script>
-				var path = "[% c.uri_for %]";
-			</script>
-			<script src="[% c.uri_for('../scripts/customer/main.js') %]"></script>
+<script>
+	var path = "[% c.uri_for %]";
+	var editPath = "[% c.uri_for(c.controller('customer').action_for('editview'))%]";
+</script>
+<script src="[% c.uri_for('../scripts/customer/main.js') %]"></script>

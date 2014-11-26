@@ -1,1 +1,41 @@
 [% META title='Films' -%]
+<!-- Section Title / -->
+
+<div class="container-700">
+	<table class="table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Release year</th>
+				<th>Rating</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+
+	<nav>
+		<ul class="pagination pagination-sm">
+			<!-- <li>
+				<a href="#">
+					<span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span>
+				</a>
+			</li> -->
+			
+			<!-- <li>
+				<a href="#">
+					<span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span>
+				</a>
+			</li> -->
+		</ul>
+	</nav>
+</div><!-- 700px / -->
+
+<script>
+	var path = "[% c.uri_for %]";
+	var pagePath = "[% c.uri_for(c.controller('customer').action_for('page'))%]";
+</script>
+<script src="[% c.uri_for('../scripts/film/main.js') %]"></script>

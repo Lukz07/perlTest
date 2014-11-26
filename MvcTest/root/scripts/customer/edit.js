@@ -3,12 +3,12 @@ $(function(){
 	var globalJsonData;
 
 	function init(){
-		renderPage(1);
+		renderPage(parseInt($(window.location.href.split('/')).last()[0]));
 	};
 
-	function renderPage(pageNumber){
+	function renderPage(customer_id){
 		$.ajax({
-			url: path+'/editdata/'+pageNumber,
+			url: path+'/editdata/'+customer_id,
 			success: function(data){				
 
 				var jsonData= null;
