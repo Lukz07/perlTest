@@ -4,19 +4,29 @@
 
           <!-- Sing Up -->
           <form class="form-signin" name="loginForm" method="post" action="[% c.uri_for('login') %]">
-            <h2 class="form-signin-heading">Sing In</h2>
+            <h2 class="form-signin-heading text-center">Sign In</h2>
             <!-- Username -->
-            <label for="username" class="sr-only">Username</label>
-            <input type="text" id="username" class="form-control" placeholder="Username" name="username"required autofocus>
-            <!-- Username /-->
+            <div class="input-group margin-bottom-sm">
+              <span class="input-group-addon">
+                <i class="fa fa-user fa-fw"></i>
+              </span>
+              <label for="username" class="sr-only">Username</label>
+              <input type="text" id="username" class="form-control" placeholder="Username" name="username"required autofocus>
+            </div>
+            <!-- Username / -->
 
-            <!-- Password /-->
-            <label for="password" class="sr-only">Password</label>
-            <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            <!-- Password -->
+            <div class="input-group margin-bottom-sm">
+              <span class="input-group-addon">
+                <i class="fa fa-key fa-fw"></i>
+              </span>
+              <label for="password" class="sr-only">Password</label>
+              <input type="password" id="password" name="password" class="form-control" placeholder="Password" required>
+            </div>
             <!-- Password /-->
 
             <!-- Remember me -->
-            <div class="checkbox">
+            <div class="checkbox text-center">
               <label>
                 <input type="checkbox" value="remember-me">Remember me
               </label>
@@ -24,7 +34,7 @@
             <!-- Remember me /-->
 
             <!-- Submit -->
-            <button class="btn btn-primary btn-block" type="submit">Sign In</button>
+            <button class="btn btn-default btn-block" type="submit">Sing In</button>
             <!-- Submit /-->
 
           </form>

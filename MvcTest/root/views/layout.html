@@ -16,6 +16,9 @@
     <!-- Custom styles for this template -->
     <link href="[% c.uri_for('/static/css/style.css') %]" rel="stylesheet">
 
+    <!-- Font Awesom -->
+    <link href="[% c.uri_for('/static/css/font-awesome.css') %]" rel="stylesheet">
+
     <!-- Animated .Js -->
     <link rel="stylesheet" href="[% c.uri_for('/static/css/animate.css')%]">
     <script src="[% c.uri_for('/static/js/wow.min.js')%]"></script>
@@ -38,9 +41,9 @@
 
   <body>
     <div id="wrap">
-
+        
       <!-- Navbar -->
-      <nav class="navbar navbar-inverse navbar-fixed-top wow fadeIn" role="navigation">
+      <nav class="navbar navbar-inverse navbar-fixed-top drop-shadow wow fadeIn" role="navigation">
         <div class="container">
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -49,17 +52,35 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="[% c.uri_for(c.controller('home').action_for('index')) %]">MVCTTEST</a>
+            <a class="navbar-brand shadow" href="[% c.uri_for(c.controller('home').action_for('index')) %]"><i class="fa fa-shekel fa-fw"></i> MVCTTEST</a>
           </div>
           <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="[% c.uri_for(c.controller('home').action_for('index')) %]">Home</a></li>
-              <li><a href="[% c.uri_for(c.controller('customer').action_for('index')) %]">Customer</a></li>
-              <li><a href="[% c.uri_for(c.controller('storemain').action_for('index')) %]">Staff</a></li>
-              <li><a href="[% c.uri_for(c.controller('film').action_for('index')) %]">Film</a></li>
+            <ul class="nav navbar-nav navbar-left">
+              <li class="active">
+                <a href="[% c.uri_for(c.controller('home').action_for('index')) %]">
+                  <i class="fa fa-home fa-fw"></i> Home
+                </a>
+              </li>
+              <li>
+                <a href="[% c.uri_for(c.controller('customer').action_for('index')) %]">
+                  <i class="fa fa-child fa-fw"></i> Customer
+                </a>
+              </li>
+              <li>
+                <a href="[% c.uri_for(c.controller('storemain').action_for('index')) %]">
+                <i class="fa fa-group fa-fw"></i> Staff
+                </a>
+              </li>
+              <li>
+                <a href="[% c.uri_for(c.controller('film').action_for('index')) %]">
+                  <i class="fa fa-film fa-fw"></i> Film
+                </a>
+              </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="[% c.uri_for(c.controller('account').action_for('index')) %]">Sing In</a></li>
+              <li><a href="[% c.uri_for(c.controller('account').action_for('index')) %]">
+                <i class="fa fa-user fa-fw"></i> Sign In</a>
+              </li>
             </ul>
           </div><!--/.nav-collapse -->
         </div>
@@ -72,11 +93,32 @@
       </div>
       <!-- Content / -->
 
+      <!-- Push / -->
+      <div id="push"></div>
+      <!-- Push / -->
+
+    </div><!-- Wrap / -->
+
     <!-- Footer  -->
-    <div id="footer">
-      <div class="container text-center">
-        <p class="muted credit wow fadeIn">This is a Test.</p>
+    <div id="footer" class="container">
+      <div id="navbar" class="navbar-collapse collapse">
+        <!--ul class="nav navbar-nav navbar-left">
+          <li class="active">
+            <a href="[% c.uri_for(c.controller('home').action_for('index')) %]">
+              <i class="fa fa-facebook fa-fw"></i>
+            </a>
+          </li>
+        </ul-->
+        <ul class="nav navbar-nav navbar-right bordertop">
+          <li><a href="#" target="_blank"><i class="fa fa-facebook"></i></a></li>
+          <li><a href="#" target="_blank"><i class="fa fa-twitter"></i></a></li>
+          <li><a href="#" target="_blank"><i class="fa fa-linkedin"></i></a></li>
+        </ul>
       </div>
+
+      <!--div class="container text-center">
+        <p class="muted credit wow fadeIn">This is a Test.</p>
+      </div-->
     </div>
     <!-- Footer / -->
 
