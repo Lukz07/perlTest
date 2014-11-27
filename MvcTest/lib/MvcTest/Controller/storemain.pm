@@ -123,6 +123,24 @@ sub editdata :Path("editdata") :Args(1){
 
 			$json->{staff} = new StoreModel( $sth->fetchrow_array() );
 
+#			$sth = DBHelper::query( $dbh, qq{SELECT * FROM payment order by payment_id} );
+
+#			my $index = 0;
+#			while( my @payment = $sth->fetchrow_array() ){
+#				$json->{payment}->{ $index++ } = new PaymentModel( @payment );
+#			}
+
+			$sth = DBHelper::query( $dbh, qq{SELECT s.staff_id, p.payment_id, p.amount, p.payment_date, p.last_update, customer_id
+											 FROM sakila.staff s
+											 JOIN sakila.payment p	on p.staff_id = s.staff_id
+											 WHERE s.staff_id = $id
+                                             order by staff_id} );
+
+			my $index = 0;
+			while( my @payment = $sth->fetchrow_array() ){
+				$json->{payment}->{ $index++ } = new PaymentModel( @payment );
+			}
+
 			$c->stash->{json_data} = $json;
 			$c->stash->{json_status} = "OK";
 			$c->forward('View::JSON');
@@ -171,42 +189,42 @@ sub editsave :Path("editsave") :Args(){
 	$c->forward('View::JSON');
 }
 
-sub edit :Path('/edit') :Args(){
-	my ( $self, $c, $id, $mode ) = @_;
+# sub edit :Path('/edit') :Args(){
+# 	my ( $self, $c, $id, $mode ) = @_;
 
-	if ( !$mode ){
-		$c->forward('View::HTML');
-	}else{
-		if ( $id > 0 ){
-			# editing
-			$c->stash->{json_status} = "ok";
-			if ( $c->request->input ){
-				# posting
-				$c->response->body("posting");
-			}else{
-				# viewing
-			    # connect to the database
-			  	my $dbh = DBHelper::connect();
+# 	if ( !$mode ){
+# 		$c->forward('View::HTML');
+# 	}else{
+# 		if ( $id > 0 ){
+# 			# editing
+# 			$c->stash->{json_status} = "ok";
+# 			if ( $c->request->input ){
+# 				# posting
+# 				$c->response->body("posting");
+# 			}else{
+# 				# viewing
+# 			    # connect to the database
+# 			  	my $dbh = DBHelper::connect();
 
-				# get data from
-			  	my $sth = DBHelper::query( $dbh, qq{SELECT * FROM staff where staff_id = $id } );
+# 				# get data from
+# 			  	my $sth = DBHelper::query( $dbh, qq{SELECT * FROM staff where staff_id = $id } );
 
-				my $json = {};
+# 				my $json = {};
 
-				$json->{staff} = new StoreModel( $sth->fetchrow_array() );
+# 				$json->{staff} = new StoreModel( $sth->fetchrow_array() );
 
-				$c->stash->{json_data} = $json;
-				$c->stash->{json_status} = "OK";
-				$c->forward('View::JSON');
-			}
+# 				$c->stash->{json_data} = $json;
+# 				$c->stash->{json_status} = "OK";
+# 				$c->forward('View::JSON');
+# 			}
 
-		}else{
-			# creating
-			$c->stash->{json_status} = "error";
-			$c->forward('View::HTML');
-		}
-	}
-}
+# 		}else{
+# 			# creating
+# 			$c->stash->{json_status} = "error";
+# 			$c->forward('View::HTML');
+# 		}
+# 	}
+# }
 
 sub delete :Path("delete") :Args(1) {
 	my ( $self, $c, $id ) = @_;
