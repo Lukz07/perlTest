@@ -34,7 +34,7 @@ $(function(){
 							.append('<td>'+val.description+'</td>')
 							.append('<td>'+val.release_year+'</td>')
 							.append('<td>'+val.rating+'</td>')
-							.append($('<td></td>').append(editBtn)));
+						);
 				});
 
 				for (var v=1; v<=totalPages; v++) {
@@ -44,11 +44,13 @@ $(function(){
 							.bind('click', function(e){
 								e.preventDefault();
 								//window.location.href = pagePath+"/"+v;
-								renderPage(v)
+								var pageToGo = $(this).html();
+								renderPage(pageToGo)
+								console.log(pageToGo);
 							})));
 				}
 
-				$('.pagination').children('a').click(function (e){});
+				//$('.pagination').children('a').click(function (e){});
 			},
 			error: function(error) {
 				alert(error.statusText);
