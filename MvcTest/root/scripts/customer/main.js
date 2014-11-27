@@ -1,13 +1,10 @@
 $(function(){
-	function init(){
-		renderPage(1);
-	};
 
-	$('.pagination a').click(function(e, page){
-		e.preventDefault();
-		page = $(this).html();
-		renderPage(page);
-	});	
+	var pageToGo = 0;
+
+	function init(){
+		renderPage(pageToGo=1);
+	};
 
 	function renderPage(pageNumber){
 		$.ajax({
@@ -41,15 +38,33 @@ $(function(){
 				});
 
 				var prev = $('<li><a id="prev" href="#"><span aria-hidden="true">&laquo;</span><span class="sr-only">Previous</span></a></li>');
-				var next = $('<li><a  id="next" href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>');
+				// $(prev).closest('a').bind('click', function(){
+				// 	e.preventDefault();
+				// 	if(pageToGo>=2)
+				// 		renderPage(pageToGo-1)
+				// });
 				
+				var next = $('<li><a  id="next" href="#"><span aria-hidden="true">&raquo;</span><span class="sr-only">Next</span></a></li>');
+				// $(next).closest('a').bind('click', function(){
+				// 	e.preventDefault();
+				// 	if(pageToGo>=1 || pageToGo<=(totalPages-1))
+				// 		renderPage(pageToGo+1)
+				// });
+
 				$('.pagination').html('');
 
 				for (var v=1; v<=totalPages; v++) {
 					
 					if(v==1) { 
-						$('.pagination').append(prev);
-						debugger;
+						$('.pagination').append($(prev)
+							.on('click', 'a', function(e){
+									e.preventDefault();
+									console.log("prev: "+pageToGo);
+									if(pageToGo>=2){
+										renderPage(pageToGo-=1)
+									}
+								})
+							);
 					}
 
 					$('.pagination').append(
@@ -57,14 +72,21 @@ $(function(){
 						.append($('<a href="#">'+v+'</a>')
 							.bind('click', function(e){
 								e.preventDefault();
-								//window.location.href = pagePath+"/"+v;
-								var pageToGo = $(this).html();
+								pageToGo = $(this).html();
 								renderPage(pageToGo)
-								console.log(pageToGo);
 							})));
 
 					if (v==totalPages) {
-						$('.pagination li:last-child').after(next);
+						$('.pagination li:last-child').after($(next)
+							.on('click', 'a', function(e){
+								e.preventDefault();
+								console.log("next: "+pageToGo);
+								if(pageToGo>=1 || pageToGo<=(totalPages-1)){
+									renderPage(pageToGo+=1)
+								}
+							})
+
+						);
 					}
 				};
 
