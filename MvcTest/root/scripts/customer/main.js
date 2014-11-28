@@ -19,7 +19,7 @@ $(function(){
 				//vacio el contenido de la tabla para mostrar la nueva
 				$('table tbody').html('');
 
-				$.each(jsonData, function(i, val){
+				$.each(jsonData.customers, function(i, val){
 
 					var editBtn = $('<button id="edit" type="button" class="btn btn-default btn-xs">Edit</button>')
 					.click(function(e){

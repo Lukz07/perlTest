@@ -67,7 +67,7 @@ sub add :Path('add'){
 		#$sth->execute()
 	  	#	or die $sth->errstr;
 	  	my $sth = DBHelper::query( $dbh, qq{insert into customer(store_id, first_name, last_name, email, address_id, active, create_date) 
-								values('$store_id', '$first_name', '$last_name', '$email', '$address_id', '$active', '$create_date')} );
+										 values('$store_id', '$first_name', '$last_name', '$email', '$address_id', '$active', '$create_date')} );
 
 
 		#$c->stash(template => 'customer/editsave.html');
@@ -104,9 +104,11 @@ sub page :Path('page') :Args(1){
 
 	my $json = {};
 
+	my @customers;
 	while( my @customer = $sth->fetchrow_array() ){
-		$json->{ $customer[0] } = new CustomerModel( @customer );
+		push( @customers, new CustomerModel( @customer ) );
 	}
+	$json->{customers} = \@customers;
 
 	$c->stash->{json_data} = $json;
 	$c->stash->{json_status} = "OK";
@@ -173,9 +175,11 @@ sub editdata :Path("editdata") :Args(1){
 			$sth = DBHelper::query( $dbh, qq{SELECT * FROM address order by address} );
 
 			my $index = 0;
+			my @addresses;
 			while( my @address = $sth->fetchrow_array() ){
-				$json->{addresses}->{ $index++ } = new AddressModel( @address );
+				push( @addresses, new AddressModel( @address ) );
 			}
+			$json->{addresses} = \@addresses;
 
 			$sth = DBHelper::query( $dbh, qq{SELECT r.rental_id, r.rental_date, r.customer_id,
 													f.film_id, f.title
@@ -186,9 +190,11 @@ sub editdata :Path("editdata") :Args(1){
 											 order by f.title} );
 
 			$index = 0;
-			while( my @rented = $sth->fetchrow_array() ){
-				$json->{rented}->{ $index++ } = new RentedModel( @rented );
+			my @rented;
+			while( my @rented_film = $sth->fetchrow_array() ){
+				push( @rented, new RentedModel( @rented_film ) );
 			}
+			$json->{rented} = \@rented;
 
 			$c->stash->{json_data} = $json;
 			$c->stash->{json_status} = "OK";

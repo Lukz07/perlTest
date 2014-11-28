@@ -10,7 +10,6 @@ $(function(){
 		$.ajax({
 			url: path+'/editdata/'+customer_id,
 			success: function(data){				
-
 				var jsonData= null;
 				jsonData = globalJsonData = data.json_data;
 				
@@ -20,16 +19,16 @@ $(function(){
 
 				for ( i in jsonData.addresses) {
 					if (jsonData.addresses[i].address_id == jsonData.customer.address_id){
-						$('#adress').val(jsonData.addresses[i].address);
+						$('#address').val(jsonData.addresses[i].address);
 					}
 				};
 
 				for ( v in jsonData.rented) {
 					if (jsonData.rented[v].customer_id == jsonData.customer.customer_id){
-
 						$('table tbody').append('<tr id="'+jsonData.rented[v].rental_id+'"></tr>');
 						$('table tbody #'+jsonData.rented[v].rental_id+'').append('<td>'+jsonData.rented[v].rental_id+'</td>');
 						$('table tbody #'+jsonData.rented[v].rental_id+'').append('<td>'+jsonData.rented[v].title+'</td>');
+						$('table tbody #'+jsonData.rented[v].rental_id+'').append('<td>'+jsonData.rented[v].rental_date+'</td>');
 
 					}
 				};
