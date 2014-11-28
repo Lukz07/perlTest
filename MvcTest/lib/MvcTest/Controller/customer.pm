@@ -125,6 +125,7 @@ sub page :Path('page') :Args(1){
 
 	$c->forward('View::JSON');
 	#$c->forward('View::HTML');
+	
 }
 
 # intento de capturar el caso sin parametros para que avise del error
@@ -176,7 +177,8 @@ sub editdata :Path("editdata") :Args(1){
 				$json->{addresses}->{ $index++ } = new AddressModel( @address );
 			}
 
-			$sth = DBHelper::query( $dbh, qq{SELECT r.rental_id, f.film_id, title, customer_id
+			$sth = DBHelper::query( $dbh, qq{SELECT r.rental_id, r.rental_date, r.customer_id,
+													f.film_id, f.title
 											 FROM rental r
 											 JOIN inventory i 	on i.inventory_id = r.inventory_id
 											 JOIN film f 		on f.film_id = i.film_id
