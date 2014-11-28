@@ -4,9 +4,10 @@ sub new {
 		my $class = shift;
 		my $self = bless {
 			'rental_id' 	=> shift,
+			'rental_date'	=> shift,
+			'customer_id'	=> shift,
 			'film_id'		=> shift,
-			'title' 		=> shift,
-			'customer_id'	=> shift
+			'title' 		=> shift
 			}, $class;
 		return $self;
 }
