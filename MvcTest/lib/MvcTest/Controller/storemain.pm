@@ -3,6 +3,7 @@ use Moose;
 use namespace::autoclean;
 use MvcTest::DB::DBHelper;
 use MvcTest::Helpers::MathHelper;
+use MvcTest::Helpers::StringHelper;
 use MvcTest::Model::StoreModel;
 
 BEGIN { extends 'Catalyst::Controller'; }
@@ -26,9 +27,8 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
-
+    $c->stash->{active} = StringHelper::getControllerName $c->controller();
 	$c->forward('View::HTML');
-
 }
 
 sub add :Path('add'){

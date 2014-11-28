@@ -56,27 +56,27 @@
           </div>
           <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
-              <li class="active">
+              <li [% IF (active == 'home') %] class="active" [% END %]>
                 <a href="[% c.uri_for(c.controller('home').action_for('index')) %]">
                   <i class="fa fa-home fa-fw"></i> Home
                 </a>
               </li>
-              <li>
+              <li [% IF (active == 'customer') %] class="active" [% END %]>
                 <a href="[% c.uri_for(c.controller('customer').action_for('index')) %]">
                   <i class="fa fa-child fa-fw"></i> Customer
                 </a>
               </li>
-              <li>
+              <li [% IF (active == 'storemain') %] class="active" [% END %]>
                 <a href="[% c.uri_for(c.controller('storemain').action_for('index')) %]">
                 <i class="fa fa-group fa-fw"></i> Staff
                 </a>
               </li>
-              <li>
+              <li [% IF (active == 'film') %] class="active" [% END %]>
                 <a href="[% c.uri_for(c.controller('film').action_for('index')) %]">
                   <i class="fa fa-film fa-fw"></i> Film
                 </a>
               </li>
-              <li>
+              <li [% IF (active == 'inventory') %] class="active" [% END %]>
                 <a href="[% c.uri_for(c.controller('inventory').action_for('index')) %]">
                   <i class="fa fa-cubes fa-fw"></i> Inventory
                 </a>

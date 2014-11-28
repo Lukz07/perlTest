@@ -3,6 +3,7 @@ use Moose;
 use namespace::autoclean;
 use MvcTest::DB::DBHelper;
 use MvcTest::Helpers::MathHelper;
+use MvcTest::Helpers::StringHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -25,10 +26,13 @@ Catalyst Controller.
 
 #my $db_username = "perltestUser";
 #my $db_password = "123456";
+#my $active = "customer";
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
 
+    #$c->stash(template => 'customer/index.html');
+    $c->stash->{active} = StringHelper::getControllerName $c->controller();
 	$c->forward('View::HTML');
 
     #$c->response->body('Matched MvcTest::Controller::customer in customer.');
@@ -138,6 +142,7 @@ sub page :Path('page') :Args(1){
 
 sub editview :Path("editview") :Args(1){
 	my ( $self, $c, $id ) = @_;
+	$c->stash->{active} = StringHelper::getControllerName $c->controller();
 	$c->stash->{id} = $id;
 	$c->forward('View::HTML');
 }

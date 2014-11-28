@@ -1,6 +1,7 @@
 package MvcTest::Controller::inventory;
 use Moose;
 use namespace::autoclean;
+use MvcTest::Helpers::StringHelper;
 
 BEGIN { extends 'Catalyst::Controller'; }
 
@@ -23,7 +24,7 @@ Catalyst Controller.
 
 sub index :Path :Args(0) {
     my ( $self, $c ) = @_;
-
+    $c->stash->{active} = StringHelper::getControllerName $c->controller();
     $c->forward('View::HTML');
 }
 
