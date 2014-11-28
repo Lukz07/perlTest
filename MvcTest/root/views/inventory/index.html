@@ -1,0 +1,47 @@
+<!-- Section Title / -->
+[% META title = 'Inventory' %]
+<!-- Section Title / -->
+			
+<!-- Breadcrumb -->
+<ol class="breadcrumb">
+  <li><a href="[% c.uri_for(c.controller('home').action_for('index')) %]">MvcTest</a></li>
+  <li class="active">Inventory</li>
+</ol>
+<!-- Breadcrumb / -->
+
+<!-- Title -->
+<h2 class="cover-heading">Inventory by Film</h2>
+<!-- Title / -->
+
+<!-- Table -->
+<div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Title</th>
+				<th>Total Quantity</th>
+				<th>Available</th>
+			</tr>
+		</thead>
+		<tbody>
+			
+		</tbody>
+	</table>
+
+	<!-- Table Pagination -->
+	<div class="text-center">
+		<nav>
+			<ul class="pagination pagination-sm"></ul>
+		</nav>
+	</div>
+	<!-- Table Pagination / -->
+
+</div><!-- Div / -->
+<!-- Table / -->
+
+<script>
+	var path = "[% c.uri_for %]";
+	var editPath = "[% c.uri_for(c.controller('inventory').action_for('editview'))%]";
+</script>
+<script src="[% c.uri_for('../scripts/inventory/main.js') %]"></script>
